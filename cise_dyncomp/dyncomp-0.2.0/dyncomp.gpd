@@ -1,0 +1,8 @@
+;; -*-Scheme-*-
+;; Gauche Package Description
+
+(define-gauche-package "dyncomp"
+  :version "0.2.0"
+  :gauche-version "0.8.14"
+  :configure "./configure "
+)

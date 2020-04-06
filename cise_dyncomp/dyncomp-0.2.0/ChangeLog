@@ -1,0 +1,87 @@
+2008-10-11  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm : Fixed a bug that non-defined symbols are referenced.
+
+	* configure.ac: version 0.2.0
+
+	* dyncomp.c, dyncomp.h, dyncomp.scm, dyncomplib.stub,
+	tcc-0.9.24/tcc.c: Added dyncomp-reset!
+
+2008-10-05  KOGURO, Naoki  <naoki@koguro.net>
+
+	* Makefile.in : Modified to make and link libtcc1.a
+
+2008-10-01  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.c (MakeSubr, RegisterSubr, RelocateSubr): Fixed the bug
+	that func_ptr of ScmSubr points wrong address when the code section
+	is relocated.
+
+2008-09-30  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm (make-cfunc): Cache #<subr> which make-cfunc
+	generates.
+
+	* dyncomp.scm (make-cfunc): Modified to return #<undef> when
+	clambda's body doesn't have no return value.
+
+2008-09-29  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm (make-type, define-type): Added define-type macro.
+
+2008-09-28  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm (define-cfn, cinclude, add-cinclude-path): Added
+	some macros.  
+
+	* * : Modified to make only one TCCState object in one module.
+
+2008-07-13  KOGURO, Naoki  <naoki@koguro.net>
+
+	* tcc-0.9.24/tcc.c (tcc_new): Added initializers for some global
+	variables.
+
+2008-07-11  KOGURO, Naoki  <naoki@koguro.net>
+
+	* configure.ac : version 0.1.2
+
+2008-07-09  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm (use-cgen-stub): Use gauche.cgen.stub module if
+	exists.
+
+2008-07-08  KOGURO, Naoki  <naoki@koguro.net>
+
+	* configure.ac, Makefile.in: Added OS specific header files.
+
+	* : Added Windows support (mingw version).
+
+2008-07-05  KOGURO, Naoki  <naoki@koguro.net>
+
+	* configure.ac: version 0.1.1
+
+	* tcc-0.9.24/tcc.c (tcc_new): Added a predefined symbol
+	'__aligned' to ignore.
+
+	* Makefile.in: Use $(MAKE) to exec make program.
+
+	* Makefile.in, tcc-0.9.24/configure: Stopped making libtcc1.a
+
+2008-07-02  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.c, dyncomp.h, dyncomp.scm, dyncomplib.stub: Refactored.
+
+	* dyncomp.scm (while): Added while statement.
+
+2008-07-01  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm, tcc-0.9.24/Makefile, tcc-0.9.24/configure,
+	tcc-0.9.24/i386-gen.c, tcc-0.9.24/tcc.c: Added MacOSX support.
+
+2008-06-22  KOGURO, Naoki  <naoki@koguro.net>
+
+	* dyncomp.scm (define-cproc, clambda): Use cgen-safe-name to
+	generate C function name.
+
+	* configure.ac: version 0.1
+

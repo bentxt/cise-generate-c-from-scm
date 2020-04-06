@@ -1,0 +1,491 @@
+---
+title: [Gauche] CiSEFizzBuzz
+url: http://kurohuku.blogspot.com/2012/07/gauchecisefizzbuzz.html
+---
+
+   #[1]PuRoGuRaMaæU9CªæºU80 - Atom [2]PuRoGuRaMaæU9CªæºU80 - RSS
+   [3]PuRoGuRaMaæU9CªæºU80 - Atom
+[4]PuRoGuRaMaª
+
+
+[Gauche]CiSEdeFizzBuzz
+
+   CiSE(C in S-Expression)deFizzBuzztUtemimasu._
+;; cise-compile.scm
+(use gauche.cgen)
+(use gauche.cgen.cise)
+(use gauche.parseopt)
+
+(define (main args)
+  (let-args (cdr args)
+    ((infile "i=s" #f)
+     (outfile "o=s" #f))
+
+    (unless (and infile outfile)
+      (display #`"usage: gosh ,(car args) -i 'input-file' -o 'output-file'\n")
+      (exit -1))
+
+    (call-with-input-file infile
+      (^ (in)
+  (call-with-output-file outfile
+    (^ (out)
+       (cise-translate in out)))))))
+
+;; cise-test.cise
+(.include <stdio.h>)
+
+(define-cfn main (argc::int argv::char**) ::int
+  (dotimes (i 30)
+    (case (% (+ i 1) 15)
+      ((0) (printf "FizzBuzz\n"))
+      ((3 6 9 12) (printf "Fizz\n"))
+      ((5 10) (printf "Buzz\n"))
+      (else (printf "%d\n" (+ i 1)))))
+  (return 0))
+
+ > gosh cise-compile.scm -i cise-test.cise -o cise-test.c
+ > gcc -o cise-test cise-test.c
+
+   ¿ [5]kurohuku »: [6]23:05
+   RaBeRu: [7]CiSE, [8]Gauche
+
+0 ¶noKoMeN6To:
+
+KoMeN6Towo¿
+
+   [9]¡no¿ [10]no¿ [11]Ho-6Mu
+   »²: [12]KoMeN6Tono¿ (Atom)
+
+ª±¹
+
+   [13]kurohuku
+          (setf (get 'kurohuku 'like) "")
+
+   [14]³°PuRoHui6-6Ruwo¨º
+
+BuRoGu A6-6KaI6Bu
+
+     * [15]|>  [16]2017 (4)
+          + [17]|>  [18]7 (2)
+          + [19]|>  [20]5 (1)
+          + [21]|>  [22]4 (1)
+
+     * [23]|>  [24]2015 (2)
+          + [25]|>  [26]6 (2)
+
+     * [27]|>  [28]2014 (1)
+          + [29]|>  [30]7 (1)
+
+     * [31]|>  [32]2013 (22)
+          + [33]|>  [34]12 (3)
+          + [35]|>  [36]9 (2)
+          + [37]|>  [38]8 (3)
+          + [39]|>  [40]7 (2)
+          + [41]|>  [42]6 (1)
+          + [43]|>  [44]3 (4)
+          + [45]|>  [46]2 (5)
+          + [47]|>  [48]1 (2)
+
+     * [49]v  [50]2012 (44)
+          + [51]|>  [52]12 (8)
+          + [53]|>  [54]11 (4)
+          + [55]|>  [56]10 (3)
+          + [57]|>  [58]9 (3)
+          + [59]v  [60]7 (5)
+               o [61][CommonLisp]Internal Server ErrorwoHuTUKusuru
+               o [62][Gauche]CiSEdeFizzBuzz
+               o [63][CommonLisp]MOPwo¿tUteniyoriMeSoTUDowo¹suru
+               o [64][graphviz]consSeRuwoku
+               o [65][Racket]SuTaN6DoA6Ro-6N6naHua6I6Ruwosuru
+          + [66]|>  [67]6 (10)
+          + [68]|>  [69]5 (2)
+          + [70]|>  [71]4 (2)
+          + [72]|>  [73]2 (2)
+          + [74]|>  [75]1 (5)
+
+     * [76]|>  [77]2011 (32)
+          + [78]|>  [79]12 (1)
+          + [80]|>  [81]11 (2)
+          + [82]|>  [83]10 (5)
+          + [84]|>  [85]9 (1)
+          + [86]|>  [87]8 (2)
+          + [88]|>  [89]7 (1)
+          + [90]|>  [91]6 (7)
+          + [92]|>  [93]5 (7)
+          + [94]|>  [95]4 (3)
+          + [96]|>  [97]2 (2)
+          + [98]|>  [99]1 (1)
+
+     * [100]|>  [101]2010 (80)
+          + [102]|>  [103]12 (6)
+          + [104]|>  [105]11 (10)
+          + [106]|>  [107]10 (5)
+          + [108]|>  [109]9 (11)
+          + [110]|>  [111]8 (9)
+          + [112]|>  [113]7 (6)
+          + [114]|>  [115]5 (2)
+          + [116]|>  [117]4 (1)
+          + [118]|>  [119]3 (14)
+          + [120]|>  [121]2 (12)
+          + [122]|>  [123]1 (4)
+
+     * [124]|>  [125]2009 (86)
+          + [126]|>  [127]12 (3)
+          + [128]|>  [129]11 (19)
+          + [130]|>  [131]10 (10)
+          + [132]|>  [133]9 (9)
+          + [134]|>  [135]8 (15)
+          + [136]|>  [137]7 (6)
+          + [138]|>  [139]6 (11)
+          + [140]|>  [141]5 (13)
+
+RaBeRu
+
+     * [142]; CommonLisp
+     * [143]: CommonLisp
+     * [144]ABCL
+     * [145]Android
+     * [146]ApachePOI
+     * [147]Assembly
+     * [148]AutoHotKey
+     * [149]Automaton
+     * [150]C
+     * [151]C#
+     * [152]C++
+     * [153]CFFI
+     * [154]CiSE
+     * [155]cl-annot
+     * [156]cl-dot
+     * [157]cl-gd
+     * [158]cl-glfw
+     * [159]cl-gtk2
+     * [160]cl-ppcre
+     * [161]cl-yacc
+     * [162]Clack
+     * [163]Clojure
+     * [164]CLOS
+     * [165]CommonLisp
+     * [166]CommonQt
+     * [167]D
+     * [168]DB
+     * [169]Eamcs
+     * [170]ELisp
+     * [171]Emacs
+     * [172]EmacsLisp
+     * [173]Erlang
+     * [174]Excel
+     * [175]F#
+     * [176]FFI
+     * [177]Gauche
+     * [178]GCC
+     * [179]GDB
+     * [180]Go
+     * [181]graphviz
+     * [182]GrayStream
+     * [183]GRUB
+     * [184]GUI
+     * [185]help
+     * [186]HTML
+     * [187]HyperSpecwo­n5demiru
+     * [188]Java
+     * [189]LAP
+     * [190]linux
+     * [191]Lions' Commentary on UNIX
+     * [192]LISP
+     * [193]McCLIM
+     * [194]mochiweb
+     * [195]Modula-3
+     * [196]Modula3
+     * [197]mtools
+     * [198]NetBSD
+     * [199]OpenGL
+     * [200]OS
+     * [201]Package
+     * [202]PCI
+     * [203]PostScript
+     * [204]PowerShell
+     * [205]Python
+     * [206]Python PythonImagingLibrary
+     * [207]PythonImageLibrary
+     * [208]QEMU
+     * [209]Racket
+     * [210]Ruby
+     * [211]SBCL
+     * [212]SBCL_Internals
+     * [213]Scheme
+     * [214]Test
+     * [215]VOP
+     * [216]x86
+     * [217]zpb-ttf
+     * [218]A6SeN6BuRa
+     * [219]O6I6Ra-6no©
+     * [220]ZiN6ZiYA-6E6-6Ru
+     * [221]DeZaI6N6PaTa-6N6
+     * [222]TeSuTo
+     * [223]NeTa
+     * [224]MaKuRo
+     * [225]MaSiN6I6PuSiRoN6
+     * [226]Ri-6Da-6MaKuRo
+     * [227]RoGuMeMo
+     * [228]©
+     *
+     *
+     *
+     * [229]¸
+     * [230]¾
+     * [231]£¨¾
+     * [232]¥¬
+     * [233]¬¥no
+     *
+
+   <'E6Sui6RiA6Ru>'Te-6Ma. Powered by [234]Blogger.
+
+References
+
+   Visible links:
+   1. http://kurohuku.blogspot.com/feeds/posts/default
+   2. http://kurohuku.blogspot.com/feeds/posts/default?alt=rss
+   3. http://kurohuku.blogspot.com/feeds/6064054480621894307/comments/default
+   4. http://kurohuku.blogspot.com/
+   5. https://www.blogger.com/profile/10828588302747950372
+   6. http://kurohuku.blogspot.com/2012/07/gauchecisefizzbuzz.html
+   7. http://kurohuku.blogspot.com/search/label/CiSE
+   8. http://kurohuku.blogspot.com/search/label/Gauche
+   9. http://kurohuku.blogspot.com/2012/07/commonlispinternal-server-error.html
+  10. http://kurohuku.blogspot.com/2012/07/commonlispmop.html
+  11. http://kurohuku.blogspot.com/
+  12. http://kurohuku.blogspot.com/feeds/6064054480621894307/comments/default
+  13. https://www.blogger.com/profile/10828588302747950372
+  14. https://www.blogger.com/profile/10828588302747950372
+  15. javascript:void(0)
+  16. http://kurohuku.blogspot.com/2017/
+  17. javascript:void(0)
+  18. http://kurohuku.blogspot.com/2017/07/
+  19. javascript:void(0)
+  20. http://kurohuku.blogspot.com/2017/05/
+  21. javascript:void(0)
+  22. http://kurohuku.blogspot.com/2017/04/
+  23. javascript:void(0)
+  24. http://kurohuku.blogspot.com/2015/
+  25. javascript:void(0)
+  26. http://kurohuku.blogspot.com/2015/06/
+  27. javascript:void(0)
+  28. http://kurohuku.blogspot.com/2014/
+  29. javascript:void(0)
+  30. http://kurohuku.blogspot.com/2014/07/
+  31. javascript:void(0)
+  32. http://kurohuku.blogspot.com/2013/
+  33. javascript:void(0)
+  34. http://kurohuku.blogspot.com/2013/12/
+  35. javascript:void(0)
+  36. http://kurohuku.blogspot.com/2013/09/
+  37. javascript:void(0)
+  38. http://kurohuku.blogspot.com/2013/08/
+  39. javascript:void(0)
+  40. http://kurohuku.blogspot.com/2013/07/
+  41. javascript:void(0)
+  42. http://kurohuku.blogspot.com/2013/06/
+  43. javascript:void(0)
+  44. http://kurohuku.blogspot.com/2013/03/
+  45. javascript:void(0)
+  46. http://kurohuku.blogspot.com/2013/02/
+  47. javascript:void(0)
+  48. http://kurohuku.blogspot.com/2013/01/
+  49. javascript:void(0)
+  50. http://kurohuku.blogspot.com/2012/
+  51. javascript:void(0)
+  52. http://kurohuku.blogspot.com/2012/12/
+  53. javascript:void(0)
+  54. http://kurohuku.blogspot.com/2012/11/
+  55. javascript:void(0)
+  56. http://kurohuku.blogspot.com/2012/10/
+  57. javascript:void(0)
+  58. http://kurohuku.blogspot.com/2012/09/
+  59. javascript:void(0)
+  60. http://kurohuku.blogspot.com/2012/07/
+  61. http://kurohuku.blogspot.com/2012/07/commonlispinternal-server-error.html
+  62. http://kurohuku.blogspot.com/2012/07/gauchecisefizzbuzz.html
+  63. http://kurohuku.blogspot.com/2012/07/commonlispmop.html
+  64. http://kurohuku.blogspot.com/2012/07/graphvizcons.html
+  65. http://kurohuku.blogspot.com/2012/07/racket.html
+  66. javascript:void(0)
+  67. http://kurohuku.blogspot.com/2012/06/
+  68. javascript:void(0)
+  69. http://kurohuku.blogspot.com/2012/05/
+  70. javascript:void(0)
+  71. http://kurohuku.blogspot.com/2012/04/
+  72. javascript:void(0)
+  73. http://kurohuku.blogspot.com/2012/02/
+  74. javascript:void(0)
+  75. http://kurohuku.blogspot.com/2012/01/
+  76. javascript:void(0)
+  77. http://kurohuku.blogspot.com/2011/
+  78. javascript:void(0)
+  79. http://kurohuku.blogspot.com/2011/12/
+  80. javascript:void(0)
+  81. http://kurohuku.blogspot.com/2011/11/
+  82. javascript:void(0)
+  83. http://kurohuku.blogspot.com/2011/10/
+  84. javascript:void(0)
+  85. http://kurohuku.blogspot.com/2011/09/
+  86. javascript:void(0)
+  87. http://kurohuku.blogspot.com/2011/08/
+  88. javascript:void(0)
+  89. http://kurohuku.blogspot.com/2011/07/
+  90. javascript:void(0)
+  91. http://kurohuku.blogspot.com/2011/06/
+  92. javascript:void(0)
+  93. http://kurohuku.blogspot.com/2011/05/
+  94. javascript:void(0)
+  95. http://kurohuku.blogspot.com/2011/04/
+  96. javascript:void(0)
+  97. http://kurohuku.blogspot.com/2011/02/
+  98. javascript:void(0)
+  99. http://kurohuku.blogspot.com/2011/01/
+ 100. javascript:void(0)
+ 101. http://kurohuku.blogspot.com/2010/
+ 102. javascript:void(0)
+ 103. http://kurohuku.blogspot.com/2010/12/
+ 104. javascript:void(0)
+ 105. http://kurohuku.blogspot.com/2010/11/
+ 106. javascript:void(0)
+ 107. http://kurohuku.blogspot.com/2010/10/
+ 108. javascript:void(0)
+ 109. http://kurohuku.blogspot.com/2010/09/
+ 110. javascript:void(0)
+ 111. http://kurohuku.blogspot.com/2010/08/
+ 112. javascript:void(0)
+ 113. http://kurohuku.blogspot.com/2010/07/
+ 114. javascript:void(0)
+ 115. http://kurohuku.blogspot.com/2010/05/
+ 116. javascript:void(0)
+ 117. http://kurohuku.blogspot.com/2010/04/
+ 118. javascript:void(0)
+ 119. http://kurohuku.blogspot.com/2010/03/
+ 120. javascript:void(0)
+ 121. http://kurohuku.blogspot.com/2010/02/
+ 122. javascript:void(0)
+ 123. http://kurohuku.blogspot.com/2010/01/
+ 124. javascript:void(0)
+ 125. http://kurohuku.blogspot.com/2009/
+ 126. javascript:void(0)
+ 127. http://kurohuku.blogspot.com/2009/12/
+ 128. javascript:void(0)
+ 129. http://kurohuku.blogspot.com/2009/11/
+ 130. javascript:void(0)
+ 131. http://kurohuku.blogspot.com/2009/10/
+ 132. javascript:void(0)
+ 133. http://kurohuku.blogspot.com/2009/09/
+ 134. javascript:void(0)
+ 135. http://kurohuku.blogspot.com/2009/08/
+ 136. javascript:void(0)
+ 137. http://kurohuku.blogspot.com/2009/07/
+ 138. javascript:void(0)
+ 139. http://kurohuku.blogspot.com/2009/06/
+ 140. javascript:void(0)
+ 141. http://kurohuku.blogspot.com/2009/05/
+ 142. http://kurohuku.blogspot.com/search/label/%3B%20CommonLisp
+ 143. http://kurohuku.blogspot.com/search/label/%3A%20CommonLisp
+ 144. http://kurohuku.blogspot.com/search/label/ABCL
+ 145. http://kurohuku.blogspot.com/search/label/Android
+ 146. http://kurohuku.blogspot.com/search/label/ApachePOI
+ 147. http://kurohuku.blogspot.com/search/label/Assembly
+ 148. http://kurohuku.blogspot.com/search/label/AutoHotKey
+ 149. http://kurohuku.blogspot.com/search/label/Automaton
+ 150. http://kurohuku.blogspot.com/search/label/C
+ 151. http://kurohuku.blogspot.com/search/label/C%23
+ 152. http://kurohuku.blogspot.com/search/label/C%2B%2B
+ 153. http://kurohuku.blogspot.com/search/label/CFFI
+ 154. http://kurohuku.blogspot.com/search/label/CiSE
+ 155. http://kurohuku.blogspot.com/search/label/cl-annot
+ 156. http://kurohuku.blogspot.com/search/label/cl-dot
+ 157. http://kurohuku.blogspot.com/search/label/cl-gd
+ 158. http://kurohuku.blogspot.com/search/label/cl-glfw
+ 159. http://kurohuku.blogspot.com/search/label/cl-gtk2
+ 160. http://kurohuku.blogspot.com/search/label/cl-ppcre
+ 161. http://kurohuku.blogspot.com/search/label/cl-yacc
+ 162. http://kurohuku.blogspot.com/search/label/Clack
+ 163. http://kurohuku.blogspot.com/search/label/Clojure
+ 164. http://kurohuku.blogspot.com/search/label/CLOS
+ 165. http://kurohuku.blogspot.com/search/label/CommonLisp
+ 166. http://kurohuku.blogspot.com/search/label/CommonQt
+ 167. http://kurohuku.blogspot.com/search/label/D
+ 168. http://kurohuku.blogspot.com/search/label/DB
+ 169. http://kurohuku.blogspot.com/search/label/Eamcs
+ 170. http://kurohuku.blogspot.com/search/label/ELisp
+ 171. http://kurohuku.blogspot.com/search/label/Emacs
+ 172. http://kurohuku.blogspot.com/search/label/EmacsLisp
+ 173. http://kurohuku.blogspot.com/search/label/Erlang
+ 174. http://kurohuku.blogspot.com/search/label/Excel
+ 175. http://kurohuku.blogspot.com/search/label/F%23
+ 176. http://kurohuku.blogspot.com/search/label/FFI
+ 177. http://kurohuku.blogspot.com/search/label/Gauche
+ 178. http://kurohuku.blogspot.com/search/label/GCC
+ 179. http://kurohuku.blogspot.com/search/label/GDB
+ 180. http://kurohuku.blogspot.com/search/label/Go
+ 181. http://kurohuku.blogspot.com/search/label/graphviz
+ 182. http://kurohuku.blogspot.com/search/label/GrayStream
+ 183. http://kurohuku.blogspot.com/search/label/GRUB
+ 184. http://kurohuku.blogspot.com/search/label/GUI
+ 185. http://kurohuku.blogspot.com/search/label/help
+ 186. http://kurohuku.blogspot.com/search/label/HTML
+ 187. http://kurohuku.blogspot.com/search/label/HyperSpec%E3%82%92%E8%AA%AD%E3%82%93%E3%81%A7%E3%81%BF%E3%82%8B
+ 188. http://kurohuku.blogspot.com/search/label/Java
+ 189. http://kurohuku.blogspot.com/search/label/LAP
+ 190. http://kurohuku.blogspot.com/search/label/linux
+ 191. http://kurohuku.blogspot.com/search/label/Lions%27%20Commentary%20on%20UNIX
+ 192. http://kurohuku.blogspot.com/search/label/LISP
+ 193. http://kurohuku.blogspot.com/search/label/McCLIM
+ 194. http://kurohuku.blogspot.com/search/label/mochiweb
+ 195. http://kurohuku.blogspot.com/search/label/Modula-3
+ 196. http://kurohuku.blogspot.com/search/label/Modula3
+ 197. http://kurohuku.blogspot.com/search/label/mtools
+ 198. http://kurohuku.blogspot.com/search/label/NetBSD
+ 199. http://kurohuku.blogspot.com/search/label/OpenGL
+ 200. http://kurohuku.blogspot.com/search/label/OS
+ 201. http://kurohuku.blogspot.com/search/label/Package
+ 202. http://kurohuku.blogspot.com/search/label/PCI
+ 203. http://kurohuku.blogspot.com/search/label/PostScript
+ 204. http://kurohuku.blogspot.com/search/label/PowerShell
+ 205. http://kurohuku.blogspot.com/search/label/Python
+ 206. http://kurohuku.blogspot.com/search/label/Python%20PythonImagingLibrary
+ 207. http://kurohuku.blogspot.com/search/label/PythonImageLibrary
+ 208. http://kurohuku.blogspot.com/search/label/QEMU
+ 209. http://kurohuku.blogspot.com/search/label/Racket
+ 210. http://kurohuku.blogspot.com/search/label/Ruby
+ 211. http://kurohuku.blogspot.com/search/label/SBCL
+ 212. http://kurohuku.blogspot.com/search/label/SBCL_Internals
+ 213. http://kurohuku.blogspot.com/search/label/Scheme
+ 214. http://kurohuku.blogspot.com/search/label/Test
+ 215. http://kurohuku.blogspot.com/search/label/VOP
+ 216. http://kurohuku.blogspot.com/search/label/x86
+ 217. http://kurohuku.blogspot.com/search/label/zpb-ttf
+ 218. http://kurohuku.blogspot.com/search/label/%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%A9
+ 219. http://kurohuku.blogspot.com/search/label/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%E8%B4%88%E7%89%A9
+ 220. http://kurohuku.blogspot.com/search/label/%E3%82%B8%E3%83%B3%E3%82%B8%E3%83%A3%E3%83%BC%E3%82%A8%E3%83%BC%E3%83%AB
+ 221. http://kurohuku.blogspot.com/search/label/%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3
+ 222. http://kurohuku.blogspot.com/search/label/%E3%83%86%E3%82%B9%E3%83%88
+ 223. http://kurohuku.blogspot.com/search/label/%E3%83%8D%E3%82%BF
+ 224. http://kurohuku.blogspot.com/search/label/%E3%83%9E%E3%82%AF%E3%83%AD
+ 225. http://kurohuku.blogspot.com/search/label/%E3%83%9E%E3%82%B7%E3%83%B3%E3%82%A4%E3%83%97%E3%82%B7%E3%83%AD%E3%83%B3
+ 226. http://kurohuku.blogspot.com/search/label/%E3%83%AA%E3%83%BC%E3%83%80%E3%83%BC%E3%83%9E%E3%82%AF%E3%83%AD
+ 227. http://kurohuku.blogspot.com/search/label/%E3%83%AD%E3%82%B0%E3%83%A1%E3%83%A2
+ 228. http://kurohuku.blogspot.com/search/label/%E6%B8%A9%E6%B3%89
+ 229. http://kurohuku.blogspot.com/search/label/%E6%9B%B8%E7%B1%8D
+ 230. http://kurohuku.blogspot.com/search/label/%E7%A5%9E%E7%A4%BE
+ 231. http://kurohuku.blogspot.com/search/label/%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE
+ 232. http://kurohuku.blogspot.com/search/label/%E6%97%A5%E6%9C%AC%E9%85%92
+ 233. http://kurohuku.blogspot.com/search/label/%E6%9C%AC%E6%97%A5%E3%81%AE%E9%85%92
+ 234. https://www.blogger.com/
+
+   Hidden links:
+ 236. https://www.blogger.com/post-edit.g?blogID=261310295976223518&postID=6064054480621894307&from=pencil
+ 237. https://www.blogger.com/comment-iframe.g?blogID=261310295976223518&postID=6064054480621894307
+ 238. http://www.blogger.com/rearrange?blogID=261310295976223518&widgetType=Profile&widgetId=Profile1&action=editWidget&sectionId=sidebar-right-1
+ 239. http://www.blogger.com/rearrange?blogID=261310295976223518&widgetType=BlogArchive&widgetId=BlogArchive1&action=editWidget&sectionId=sidebar-right-1
+ 240. http://kurohuku.blogspot.com/search/label/%E5%B1%85%E9%85%92%E5%B1%8B
+ 241. http://kurohuku.blogspot.com/search/label/%E9%85%92
+ 242. http://kurohuku.blogspot.com/search/label/%E9%85%92%E5%B1%8B
+ 243. http://kurohuku.blogspot.com/search/label/%E6%97%85%E8%A1%8C
+ 244. http://www.blogger.com/rearrange?blogID=261310295976223518&widgetType=Label&widgetId=Label1&action=editWidget&sectionId=sidebar-right-1
+ 245. http://www.blogger.com/rearrange?blogID=261310295976223518&widgetType=Attribution&widgetId=Attribution1&action=editWidget&sectionId=footer-3

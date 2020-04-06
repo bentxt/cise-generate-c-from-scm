@@ -1,0 +1,902 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Gauche Users&rsquo; Reference: Generating C code</title>
+
+<meta name="description" content="Gauche Users&rsquo; Reference: Generating C code">
+<meta name="keywords" content="Gauche Users&rsquo; Reference: Generating C code">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" rel="index" title="Function and Syntax Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Library-modules-_002d-Gauche-extensions.html#Library-modules-_002d-Gauche-extensions" rel="up" title="Library modules - Gauche extensions">
+<link href="Character-code-conversion.html#Character-code-conversion" rel="next" title="Character code conversion">
+<link href="Importing-gauche-built_002dins.html#Importing-gauche-built_002dins" rel="prev" title="Importing gauche built-ins">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div style="width:100%" class="header"><p style="text-align:center"><a href="https://practical-scheme.net/gauche/memo.html">For Gauche 0.9.6</a></p></div><hr><a name="Generating-C-code"></a>
+<div class="header">
+<p>
+Next: <a href="Character-code-conversion.html#Character-code-conversion" accesskey="n" rel="next">Character code conversion</a>, Previous: <a href="Importing-gauche-built_002dins.html#Importing-gauche-built_002dins" accesskey="p" rel="prev">Importing gauche built-ins</a>, Up: <a href="Library-modules-_002d-Gauche-extensions.html#Library-modules-_002d-Gauche-extensions" accesskey="u" rel="up">Library modules - Gauche extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="gauche_002ecgen-_002d-Generating-C-code"></a>
+<h3 class="section">9.3 <code>gauche.cgen</code> - Generating C code</h3>
+
+<p>Significant part of Gauche is written in Gauche or S-expression
+based DSL.  During the building process, they are converted
+into C sources and then compiled by C compiler.
+The <code>gauche.cgen</code> module and its submodules expose
+the functionality Gauche build process is using to the general use.
+</p>
+<p>Required features for a C code generator differ greatly among
+applications, and too much scaffolding could be a constraint
+for the module users.  So, instead of providing a single
+solid framework, we provide a set of loosely coupled modules
+so that you can combine necessary features freely.  In fact,
+some of Gauche build process only use <code>gauche.cgen.unit</code>
+and <code>gauche.cgen.literal</code> (see <samp>src/builtin-syms.scm</samp>,
+for example).
+</p>
+<dl>
+<dt><a name="index-gauche_002ecgen-1"></a>Module: <strong>gauche.cgen</strong></dt>
+<dd><a name="index-gauche_002ecgen"></a>
+<p>This is a convenience module that extends
+<code>gauche.cgen.unit</code>, <code>gauche.cgen.literal</code>,
+<code>gauche.cgen.type</code> and <code>gauche.cgen.cise</code> together.
+</p></dd></dl>
+
+<p>Usually you can just use <code>gauche.cgen</code> and don&rsquo;t need
+to think about individual submodules.
+The following subsections are organized by submodules
+only for the convenience of explanation.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Generating-C-source-files" accesskey="1">Generating C source files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">gauche.cgen.unit
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Generating-Scheme-literals" accesskey="2">Generating Scheme literals</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">gauche.cgen.literals
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Conversions-between-Scheme-and-C" accesskey="3">Conversions between Scheme and C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">gauche.cgen.type
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#C-in-S-expression" accesskey="4">C in S expression</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">gauche.cgen.cise
+</td></tr>
+</table>
+
+<hr>
+<a name="Generating-C-source-files"></a>
+<div class="header">
+<p>
+Next: <a href="#Generating-Scheme-literals" accesskey="n" rel="next">Generating Scheme literals</a>, Previous: <a href="#Generating-C-code" accesskey="p" rel="prev">Generating C code</a>, Up: <a href="#Generating-C-code" accesskey="u" rel="up">Generating C code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Generating-C-source-files-1"></a>
+<h4 class="subsection">9.3.1 Generating C source files</h4>
+
+<p>One of the tricky issues about generating C source is that
+you have to put several fragments of code in different
+parts of the source file, even you want to say just one thing&mdash;that is,
+sometimes you have to put declaration before the actual definition,
+plus some setup code that needs to be run at initialization time.
+</p>
+<a name="Creating-a-frame"></a>
+<h4 class="subsubheading">Creating a frame</h4>
+
+<dl>
+<dt><a name="index-_003ccgen_002dunit_003e"></a>Class: <strong>&lt;cgen-unit&gt;</strong></dt>
+<dd><a name="index-cgen_002dunit"></a>
+<p>{<tt>gauche.cgen</tt>}
+A <em>cgen-unit</em> is a unit of C source generation.
+It corresponds to one .c file, and optionally one .h file.
+During the processing, a &quot;current unit&quot; is kept in a parameter
+<code>cgen-current-unit</code>, and most cgen APIs implicitly work to it.
+</p>
+<p>The following slot are for public use.  They are used to tailor
+the output.  Usually you set those slots at initialization time.
+The effect is undefined if you change them in the middle of
+the code generation process.
+</p>
+<dl>
+<dt><a name="index-name-of-_003ccgen_002dunit_003e"></a>Instance Variable of &lt;cgen-unit&gt;: <strong>name</strong></dt>
+<dd><p>A string to name this unit.  This is used for the default name
+of the generated files (<samp><var>name</var>.c</samp> and <samp><var>name</var>.h</samp>)
+and the suffix of the default name of initialization function.
+Other cgen modules may use this to generate names.  Avoid using
+characters that are not valid for C identifiers.
+</p>
+<p>You can override those default names by setting the other slots.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-c_002dfile-of-_003ccgen_002dunit_003e"></a>Instance Variable of &lt;cgen-unit&gt;: <strong>c-file</strong></dt>
+<dt><a name="index-h_002dfile-of-_003ccgen_002dunit_003e"></a>Instance Variable of &lt;cgen-unit&gt;: <strong>h-file</strong></dt>
+<dd><p>The name of the C source file and header file, in strings.
+If they are <code>#f</code> (by default), the value of name slot
+is used as the file name, with extension <code>.c</code> or <code>.h</code>
+is attached, respectively.
+</p>
+<p>To get the file names to be generated, use <code>cgen-unit-c-file</code>
+and <code>cgen-unit-h-file</code> generic functions, instead of reading
+these slots.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-preamble-of-_003ccgen_002dunit_003e"></a>Instance Variable of &lt;cgen-unit&gt;: <strong>preamble</strong></dt>
+<dd><p>A list of strings to be inserted at the top of the generated sources.
+The default value is <code>(&quot;/* Generated by gauche.cgen */&quot;)</code>.
+Each string appears in its own line.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-init_002dprologue-of-_003ccgen_002dunit_003e"></a>Instance Variable of &lt;cgen-unit&gt;: <strong>init-prologue</strong></dt>
+<dt><a name="index-init_002depilogue-of-_003ccgen_002dinit_003e"></a>Instance Variable of &lt;cgen-init&gt;: <strong>init-epilogue</strong></dt>
+<dd><p>A string to start or to end the initialization function, respectively.
+The default value of <code>init-prologue</code> is
+<code>&quot;void Scm_Init_NAME(void) {&quot;</code> where <code>NAME</code> is the
+value of the <code>name</code> slot.  The default value of <code>init-epilogue</code>
+is just <code>&quot;}&quot;</code>.  Each string appears in its own line.
+</p>
+<p>To get the default initialization function name, use <code>cgen-unit-init-name</code>
+generic function.
+</p>
+<p>To customize initialization function name, arguments and/or return type,
+set <code>init-prologue</code>.
+</p>
+<p>The content of initialization function is filled by the code
+fragments registered by <code>cgen-init</code>.
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dcurrent_002dunit"></a>Parameter: <strong>cgen-current-unit</strong></dt>
+<dd><p>A parameter to keep the current cgen-unit.
+</p></dd></dl>
+
+<p>A typical flow of generating C code is as follows:
+</p>
+<ol>
+<li> Create a <code>&lt;cgen-unit&gt;</code> and make it the current unit.
+</li><li> Call code insertion APIs with code fragments.  Fragments are accumulated
+in the current unit.
+</li><li> Call <em>emit</em> method on the unit, which generates a C file
+and optionally a header file.
+</li></ol>
+
+<dl>
+<dt><a name="index-cgen_002demit_002dc"></a>Generic Function: <strong>cgen-emit-c</strong> <em>cgen-unit</em></dt>
+<dt><a name="index-cgen_002demit_002dh"></a>Generic Function: <strong>cgen-emit-h</strong> <em>cgen-unit</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Write the accumulated code fragments in <var>cgen-unit</var> to a
+C source file and C header file.  The name of the files are
+determined by calling <code>cgen-unit-c-file</code> and <code>cgen-unit-h-file</code>,
+respectively.  If the files already exist, its content is overwritten;
+you can&rsquo;t gradually write to the files.
+So, usually these procedures are called at the last step of the code
+generation.
+</p>
+<p>We&rsquo;ll explain the details of how each file is organized under
+&ldquo;Filling the content&rdquo; section below.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dunit_002dc_002dfile"></a>Generic Function: <strong>cgen-unit-c-file</strong> <em>cgen-unit</em></dt>
+<dt><a name="index-cgen_002dunit_002dh_002dfile"></a>Generic Function: <strong>cgen-unit-h-file</strong> <em>cgen-unit</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Returns a string that names C source and header file for
+<var>cgen-unit</var>, respectively.  The default method first
+looks at <code>c-file</code> or <code>h-file</code> slot of the
+<var>cgen-unit</var>, and if it is <code>#f</code>, use the value of <code>name</code>
+slot and appends an extension <code>.c</code> or <code>.h</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dunit_002dinit_002dname"></a>Generic Function: <strong>cgen-unit-init-name</strong> <em>cgen-unit</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Returns a string that names the initialization function
+generated to C.  It is used to create the default
+<code>init-prologue</code> value.
+</p></dd></dl>
+
+<a name="Filling-the-content"></a>
+<h4 class="subsubheading">Filling the content</h4>
+
+<p>There are four parts to which you can add C code
+fragment.  Within each part, code fragments are rendered in the
+same order as added.
+</p>
+<dl compact="compact">
+<dt>extern</dt>
+<dd><p>This part is put into the header file, if exists.
+</p></dd>
+<dt>decl</dt>
+<dd><p>Placed at the beginning of the C source, after the standard
+prologue.
+</p></dd>
+<dt>body</dt>
+<dd><p>Placed in the C source, following the &rsquo;decl&rsquo; part.
+</p></dd>
+<dt>init</dt>
+<dd><p>Placed inside the initialization function, which appears at
+the end of the C source.
+</p></dd>
+</dl>
+
+<p>The following procedures are the simple way to put a souce
+code fragments in an appropriate part:
+</p>
+<dl>
+<dt><a name="index-cgen_002dextern"></a>Function: <strong>cgen-extern</strong> <em>code &hellip;</em></dt>
+<dt><a name="index-cgen_002ddecl"></a>Function: <strong>cgen-decl</strong> <em>code &hellip;</em></dt>
+<dt><a name="index-cgen_002dbody"></a>Function: <strong>cgen-body</strong> <em>code &hellip;</em></dt>
+<dt><a name="index-cgen_002dinit"></a>Function: <strong>cgen-init</strong> <em>code &hellip;</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Put code fragments <var>code</var> &hellip; to the appropriate parts.
+Each fragment must be a string.
+</p></dd></dl>
+
+<p>This is a minimal example to show the typical usage.
+After running this code you&rsquo;ll get <code>my-cfile.c</code> and
+<code>my-cfile.h</code> in the current directory.
+</p>
+<div class="example">
+<pre class="example">(use gauche.parameter)
+(use gauche.cgen)
+
+(define *unit* (make &lt;cgen-unit&gt; :name &quot;my-cfile&quot;))
+
+(parameterize ([cgen-current-unit *unit*])
+  (cgen-decl &quot;#include &lt;stdio.h&gt;&quot;)
+  (cgen-init &quot;printf(stderr, \&quot;initialization function\\n\&quot;);&quot;)
+  (cgen-body &quot;void foo(int n) { printf(stderr, \&quot;got %d\\n\&quot;, n); }&quot;)
+  (cgen-extern &quot;void foo(int n);&quot;)
+  )
+
+(cgen-emit-c *unit*)
+(cgen-emit-h *unit*)
+</pre></div>
+
+<p>These are handy escaping procedures; they are useful even
+if you don&rsquo;t use other parts of the <code>cgen</code> modules.
+</p>
+<dl>
+<dt><a name="index-cgen_002dsafe_002dname"></a>Function: <strong>cgen-safe-name</strong> <em>string</em></dt>
+<dt><a name="index-cgen_002dsafe_002dname_002dfriendly"></a>Function: <strong>cgen-safe-name-friendly</strong> <em>string</em></dt>
+<dt><a name="index-cgen_002dsafe_002dstring"></a>Function: <strong>cgen-safe-string</strong> <em>string</em></dt>
+<dt><a name="index-cgen_002dsafe_002dcomment"></a>Function: <strong>cgen-safe-comment</strong> <em>string</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Escapes characters invalid in C identifiers, C string literals or C comments.
+</p>
+<p>With <code>cgen-safe-name</code>, characters other than ASCII alphabets
+and digits are converted to a form <code>_XX</code>, where <code>XX</code> is
+hexadecimal notation of the character code.  (Note that the character
+<code>_</code> is also converted.)  So the returned string can be used
+safely as a C identifier.  The mapping is injective, that is,
+if the source strings differ, the result string always differ.
+</p>
+<p>On the other hand, <code>cgen-safe-name-friendly</code> convers
+the input string into more readable C identifier.  <code>-&gt;</code> becomes
+<code>_TO</code> (e.g. <code>char-&gt;integer</code> becomes <code>char_TOinteger</code>),
+other <code>-</code> and <code>_</code> become <code>_</code>,
+<code>?</code> becomes <code>P</code> (e.g. <code>char?</code> becomes <code>charP</code>),
+<code>!</code> becomes <code>X</code> (e.g. <code>set!</code> becomes <code>setX</code>),
+<code>&lt;</code> and <code>&gt;</code> become <code>_LT</code> and <code>_GT</code> respectively.
+Other special characters except <code>_</code> are converted to <code>_XX</code>
+as in <code>cgen-safe-name</code>.  The mapping is not injective; e.g.
+both <code>read-line</code> and <code>read_line</code> map to <code>read_line</code>.
+Use this only when you think some human needs to read the generated
+C code (which is not recommended, by the way.)
+</p>
+<p>If you want to write out a Scheme string as a C string literal,
+you can use <code>cgen-safe-string</code>.  It escapes control
+characters and non-ascii characters.  If the Scheme string contains
+a character beyond ASCII, it is encoded in Gauche&rsquo;s native encoding.
+(NB: It also escapes <code>?</code>, to avoid accidenal formation of
+C trigraphs).
+</p>
+<p>Much simpler is <code>cgen-safe-comment</code>, which just converts
+<code>/*</code> and <code>*/</code> into <code>/ *</code> and <code>* /</code> (a space
+between those two characters), so that it won&rsquo;t terminate the
+comment inadvertently.  (Technically, escaping only <code>*/</code> suffice,
+but some simple-minded C parser might be confused by <code>/*</code> in the
+comments).   The conversion isn&rsquo;t injective as well.
+</p>
+<div class="example">
+<pre class="example">(cgen-safe-name &quot;char-alphabetic?&quot;)
+  &rArr; &quot;char_2dalphabetic_3f&quot;
+(cgen-safe-name-friendly &quot;char-alphabetic?&quot;)
+  &rArr; &quot;char_alphabeticP&quot;
+(cgen-safe-string &quot;char-alphabetic?&quot;)
+  &rArr; &quot;\&quot;char-alphabetic\\077\&quot;&quot;
+
+(cgen-safe-comment &quot;*/*&quot;
+  &rArr; &quot;* / *&quot;
+</pre></div>
+</dd></dl>
+
+
+<p>If you want to conditionalize a fragment by C preprocessor
+<code>#ifdef</code>s, use the following macro:
+</p>
+<dl>
+<dt><a name="index-cgen_002dwith_002dcpp_002dcondition"></a>Macro: <strong>cgen-with-cpp-condition</strong> <em>cpp-expr body &hellip;</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Code fragments submitted in <var>body</var> &hellip; are protected
+by <code>#if <var>cpp-expr</var></code> and <code>#endif</code>.
+</p>
+<p>If <var>cpp-expr</var> is a string, it is emitted literally:
+</p>
+<div class="example">
+<pre class="example">(cgen-with-cpp-condition &quot;defined(FOO)&quot;
+  (cgen-init &quot;foo();&quot;))
+
+;; will generate:
+#if defined(FOO)
+foo();
+#endif /* defined(FOO) */
+</pre></div>
+
+<p>You can also construct <var>cpp-expr</var> by S-expr.
+</p>
+<div class="example">
+<pre class="example">&lt;cpp-expr&gt; : &lt;string&gt;
+           | (defined &lt;cpp-expr&gt;)
+           | (not &lt;cpp-expr&gt;)
+           | (&lt;n-ary-op&gt; &lt;cpp-expr&gt; &lt;cpp-expr&gt; ...)
+           | (&lt;binary-op&gt; &lt;cpp-expr&gt; &lt;cpp-expr&gt;)
+
+&lt;n-ary-op&gt; : and | or | + | * | - | /
+
+&lt;binary-op&gt; : &gt; | &gt;= | == | &lt; | &lt;= | !=
+            | logand | logior | lognot | &gt;&gt; | &lt;&lt;
+</pre></div>
+
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">(cgen-with-cpp-condition '(and (defined FOO)
+                               (defined BAR))
+  (cgen-init &quot;foo();&quot;))
+
+;; will generate:
+#if ((defined FOO)&amp;&amp;(defined BAR))
+foo();
+#endif /* ((defined FOO)&amp;&amp;(defined BAR)) */
+</pre></div>
+
+<p>You can nest <code>cgen-with-cpp-condition</code>.
+</p></dd></dl>
+
+<a name="Submitting-code-fragments-for-more-than-one-parts"></a>
+<h4 class="subsubheading">Submitting code fragments for more than one parts</h4>
+
+<p>When you try to abstract code generation process,
+calling individual procedures for each parts (e.g. <code>cgen-body</code>
+or <code>cgen-init</code>) becomes tedious, since such higher-level
+constructs are likely to require generating code fragments
+to various parts.  Instead, you can create a customized class
+that handles submission of fragments to appropriate parts.
+</p>
+<dl>
+<dt><a name="index-_003ccgen_002dnode_003e"></a>Class: <strong>&lt;cgen-node&gt;</strong></dt>
+<dd><a name="index-cgen_002dnode"></a>
+<p>{<tt>gauche.cgen</tt>}
+A base class to represent a set of code fragments.
+</p>
+<p>The state of C preprocessor condition (set by <code>with-cgen-cpp-condition</code>)
+is captured when an instance of the subclass of this class is
+created, so generating appropriate <code>#if</code>s and <code>#endif</code>s are
+automatically handled.
+</p></dd></dl>
+
+<p>You subclass <code>&lt;cgen-node&gt;</code>, then define method(s) to
+one or more of the following generic functions:
+</p>
+<dl>
+<dt><a name="index-cgen_002demit_002dxtrn"></a>Generic Function: <strong>cgen-emit-xtrn</strong> <em>cgen-node</em></dt>
+<dt><a name="index-cgen_002demit_002ddecl"></a>Generic Function: <strong>cgen-emit-decl</strong> <em>cgen-node</em></dt>
+<dt><a name="index-cgen_002demit_002dbody"></a>Generic Function: <strong>cgen-emit-body</strong> <em>cgen-node</em></dt>
+<dt><a name="index-cgen_002demit_002dinit"></a>Generic Function: <strong>cgen-emit-init</strong> <em>cgen-node</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+These generic functions are called during writing out
+the C source within <code>cgen-emit-c</code> and <code>cgen-emit-h</code>.
+Inside these methods, anything written out to the
+current output port goes into the output file.
+</p>
+<p>While generating <code>.h</code> file by <code>cgen-emit-h</code>,
+<code>cgen-emit-xtrn</code> method for all submitted nodes are
+called in order of submission.
+</p>
+<p>While generating <code>.c</code> file by <code>cgen-emit-c</code>,
+<code>cgen-emit-decl</code> method for all submitted nodes are
+called first, then <code>cgen-emit-body</code> method, then
+<code>cgen-emit-init</code> method.
+</p>
+<p>If you don&rsquo;t specialize any one of these method, it doesn&rsquo;t
+generate code in that part.
+</p></dd></dl>
+
+<p>Once you define your subclass and create an instance,
+you can submit it to the current cgen unit by this procedure:
+</p>
+<dl>
+<dt><a name="index-cgen_002dadd_0021"></a>Function: <strong>cgen-add!</strong> <em>cgen-node</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Submit <var>cgen-node</var> to the current cgen unit.
+If the current unit is not set, <var>cgen-node</var> is simply ignored.
+</p></dd></dl>
+
+<p>In fact, the procedures <code>cgen-extern</code>, <code>cgen-decl</code>,
+<code>cgen-body</code> and <code>cgen-init</code> are just a convenience
+wrapper to create an internal subclass specialized to generate
+code fragment only to the designated part.
+</p>
+
+<hr>
+<a name="Generating-Scheme-literals"></a>
+<div class="header">
+<p>
+Next: <a href="#Conversions-between-Scheme-and-C" accesskey="n" rel="next">Conversions between Scheme and C</a>, Previous: <a href="#Generating-C-source-files" accesskey="p" rel="prev">Generating C source files</a>, Up: <a href="#Generating-C-code" accesskey="u" rel="up">Generating C code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Generating-Scheme-literals-1"></a>
+<h4 class="subsection">9.3.2 Generating Scheme literals</h4>
+
+<p>Sometimes you want to refer to a Scheme constant value in C code.
+It is trivial if the value is a simple thing like Scheme boolean
+(<code>SCM_TRUE</code>, <code>SCM_FALSE</code>), characters (<code>SCM_MAKE_CHAR(code)</code>),
+small integers (<code>SCM_MAKE_INT(value)</code>), etc.  You can directly
+write it in C code.  However, once you step outside of these simple
+values, it gets tedious quickly, involving static data declarations
+and/or runtime initialization code.
+</p>
+<p>For example, to get a Scheme value of a list of symbols <code>(a b c)</code>,
+you have to (1) create <code>ScmString</code>s for the names of the symbols,
+(2) pass them to <code>Scm_Intern</code> to get Scheme symbols, then
+(3) call <code>Scm_Cons</code>es (or a convenience macro <code>SCM_LIST3</code>) to
+build a list.
+</p>
+<p>With <code>gauche.cgen</code>, those code can be generated automatically.
+</p>
+<p>NOTE: If you use <code>cgen-literal</code>, make sure you call
+<code>(cgen-decl &quot;#include &lt;gauche.h&gt;&quot;)</code> to include <samp>gauche.h</samp>
+before the first call of <code>cgen-literal</code>, which may insert
+declarations that needs <samp>gauche.h</samp>.
+</p>
+<dl>
+<dt><a name="index-cgen_002dliteral"></a>Function: <strong>cgen-literal</strong> <em>obj</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Returns an <code>&lt;cgen-literal&gt;</code> object for a Scheme object <var>obj</var>,
+and submit necessary declarations and initialization code to the
+current cgen unit.
+</p></dd></dl>
+
+<p>For the above example, you can just call <code>(cgen-literal '(a b c))</code>
+and the C code to set up the Scheme literal of the list of three
+symbols will be generated.
+</p>
+<p>The result of <code>cgen-literal</code> is an instance of <code>&lt;cgen-literal&gt;</code>;
+the detail of the class isn&rsquo;t for public use, but you can use it
+to refer the created literal in C code.
+</p>
+<dl>
+<dt><a name="index-cgen_002dcexpr"></a>Generic Function: <strong>cgen-cexpr</strong> <em>cgen-literal</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Returns a C code expression fragment of type <code>ScmObj</code>,
+which represents the Scheme literal value.
+</p>
+<p>The following example creates a C function <code>printabc</code> that prints
+the literal value <code>(a b c)</code>, created by <code>cgen-literal</code>.
+</p>
+<div class="example">
+<pre class="example">(define *unit* (make &lt;cgen-unit&gt; :name &quot;foo&quot;))
+(parameterize ((cgen-current-unit *unit*))
+  (let1 lit (cgen-literal '(a b c))
+    (cgen-body
+     (format &quot;void printabc() { Scm_Printf(SCM_CUROUT, \&quot;%S\&quot;, ~a); }&quot;
+             (cgen-c-name lit)))))
+(cgen-emit-c *unit*)
+</pre></div>
+
+<p>If you examine the generated file <samp>foo.c</samp>, you&rsquo;ll get a
+general idea of how it is handled.
+</p></dd></dl>
+
+<p>One advantage of <code>cgen-literal</code> is that it tries to share
+the same literal whenever possible.  If you call
+<code>(cgen-literal '(a b c))</code> twice in the same cgen unit,
+you&rsquo;ll get one instance of cgen-literal.  If you call
+<code>(cgen-literal '(b c))</code> then, it will share the tail
+of the original list <code>(a b c)</code>.  So you can just use
+<code>cgen-literal</code> whenever you need to have Scheme literal
+values, without worrying about generating excessive amount of
+duplicated code.
+</p>
+<p>Certain Scheme objects cannot be generated as a literal; for example,
+an opened port can&rsquo;t, since it carries lots of runtime information.
+</p>
+<p>(There&rsquo;s a machinery to allow programmers to extend the cgen-literal
+behavior for new types.  The API isn&rsquo;t fixed yet, though.)
+</p>
+
+<hr>
+<a name="Conversions-between-Scheme-and-C"></a>
+<div class="header">
+<p>
+Next: <a href="#C-in-S-expression" accesskey="n" rel="next">C in S expression</a>, Previous: <a href="#Generating-Scheme-literals" accesskey="p" rel="prev">Generating Scheme literals</a>, Up: <a href="#Generating-C-code" accesskey="u" rel="up">Generating C code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Conversions-between-Scheme-and-C-1"></a>
+<h4 class="subsection">9.3.3 Conversions between Scheme and C</h4>
+
+<p>In the C world, any Scheme object is uniformly of type <code>ScmObj</code>.
+But it is often the case that you need to narrow down to the
+specific type and convert it to a C value.  Gauche maintains
+a database of how to typecheck and map Scheme value to C value and
+vice versa.
+</p>
+<p>Note that the mapping isn&rsquo;t one-to-one: Scheme <code>&lt;integer&gt;</code>
+can be mapped to C&rsquo;s <code>short</code>, <code>long</code>, <code>unsigned int</code>,
+or even just <code>ScmObj</code> if the C routine wants to cover bignums.
+So each mapping has its own name.  For historical reasons, each
+mapping is called <em>stub type</em>.  The names of stub types look
+like Scheme type but its semantics differ from Scheme type.
+Remember: Each stub type represents a specific mapping between a
+Scheme type and a C type.
+</p>
+<p>Each stub type has a <em>C-predicate</em>,
+a <em>boxer</em> and an <em>unboxer</em>, each of them is a Scheme
+string for the name of a C function or C macro.
+A C-predicate takes <code>ScmObj</code> object and returns C boolean
+value that if the given object has a valid type and range for the
+stub type.
+A boxer takes C object and converts it to a Scheme object; it
+usually involves wrapping or <em>boxing</em> the C value in a
+tagged pointer or object, hence the name.
+An unboxer does the opposite: takes a Scheme object and convert
+it to a C value.  The Scheme object must be checked by the C-predicate
+before being passed to the unboxer.
+</p>
+<p>The following table shows the predefined stub types.
+Note that the most of aggregate types has one to one mappings.
+The difficult ones are numeric types and strings.
+Scheme numbers can represent much wider range of numbers
+than C, so you have to narrow down according to the capability
+of C routine.  Scheme strings have byte size and character length,
+and the body may not be NULL-terminated; so the <code>&lt;string&gt;</code>
+stub type maps Scheme string to <code>ScmString*</code>.  For the convenience,
+you can use <code>&lt;const-cstring&gt;</code>, which creates NUL-terminated
+C string; beware that it may incur some copying cost.
+</p>
+<div class="example">
+<pre class="example">Stub type    Scheme       C           Notes
+-----------------------------------------------------------------
+&lt;fixnum&gt;     &lt;integer&gt;    int         Integers within fixnum range
+&lt;integer&gt;    &lt;integer&gt;    ScmObj      Any exact integers
+&lt;real&gt;       &lt;real&gt;       double      Value converted to double
+&lt;number&gt;     &lt;number&gt;     ScmObj      Any numbers
+
+&lt;int&gt;        &lt;integer&gt;    int         Integers representable in C
+&lt;int8&gt;       &lt;integer&gt;    int
+&lt;int16&gt;      &lt;integer&gt;    int
+&lt;int32&gt;      &lt;integer&gt;    int
+&lt;short&gt;      &lt;integer&gt;    short
+&lt;long&gt;       &lt;integer&gt;    long
+&lt;uint&gt;       &lt;integer&gt;    uint        Integers representable in C
+&lt;uint8&gt;      &lt;integer&gt;    uint
+&lt;uint16&gt;     &lt;integer&gt;    uint
+&lt;uint32&gt;     &lt;integer&gt;    uint
+&lt;ushort&gt;     &lt;integer&gt;    ushort
+&lt;ulong&gt;      &lt;integer&gt;    ulong
+&lt;float&gt;      &lt;real&gt;       float       Unboxed value casted to float
+&lt;double&gt;     &lt;real&gt;       double      Alias of &lt;real&gt;
+
+&lt;boolean&gt;    &lt;boolean&gt;    int         Boolean value
+&lt;char&gt;       &lt;char&gt;       ScmChar     Note: not a C char
+
+&lt;void&gt;       -            void        (Used only as a return type.
+                                        Scheme function returns #&lt;undef&gt;)
+
+&lt;string&gt;     &lt;string&gt;     ScmString*  Note: not a C string
+
+&lt;const-cstring&gt; &lt;string&gt;  const char* For arguments, string is unboxed
+                                      by Scm_GetStringConst.
+                                      For return values, C string is boxed
+                                      by SCM_MAKE_STR_COPYING.
+
+&lt;const-cstring-safe&gt; &lt;string&gt; const char*  Like &lt;const-cstring&gt;,
+                                      but when converting from Scheme,
+                                      reject a string with NUL chars in it.
+
+&lt;pair&gt;       &lt;pair&gt;       ScmPair*
+&lt;list&gt;       &lt;list&gt;       ScmObj
+&lt;string&gt;     &lt;string&gt;     ScmString*
+&lt;symbol&gt;     &lt;symbol&gt;     ScmSymbol*
+&lt;keyword&gt;    &lt;keyword&gt;    ScmKeyword*
+&lt;vector&gt;     &lt;vector&gt;     ScmVector*
+&lt;uvector&gt;    &lt;uvector&gt;    ScmUVector*
+&lt;s8vector&gt;   &lt;s8vector&gt;   ScmS8Vector*
+&lt;u8vector&gt;   &lt;u8vector&gt;   ScmU8Vector*
+&lt;s16vector&gt;  &lt;s16vector&gt;  ScmS16Vector*
+&lt;u16vector&gt;  &lt;u16vector&gt;  ScmU16Vector*
+&lt;s32vector&gt;  &lt;s32vector&gt;  ScmS32Vector*
+&lt;u32vector&gt;  &lt;u32vector&gt;  ScmU32Vector*
+&lt;s64vector&gt;  &lt;s64vector&gt;  ScmS64Vector*
+&lt;u64vector&gt;  &lt;u64vector&gt;  ScmU64Vector*
+&lt;f16vector&gt;  &lt;f16vector&gt;  ScmF16Vector*
+&lt;f32vector&gt;  &lt;f32vector&gt;  ScmF32Vector*
+&lt;f64vector&gt;  &lt;f64vector&gt;  ScmF64Vector*
+
+&lt;hash-table&gt; &lt;hash-table&gt; ScmHashTable*
+&lt;tree-map&gt;   &lt;tree-map&gt;   ScmTreeMap*
+
+&lt;char-set&gt;   &lt;char-set&gt;   ScmCharSet*
+&lt;regexp&gt;     &lt;regexp&gt;     ScmRegexp*
+&lt;regmatch&gt;   &lt;regmatch&gt;   ScmRegMatch*
+&lt;port&gt;       &lt;port&gt;       ScmPort*
+&lt;input-port&gt;  &lt;input-port&gt; ScmPort*
+&lt;output-port&gt; &lt;output-port&gt; ScmPort*
+&lt;procedure&gt;  &lt;procedure&gt;  ScmProcedure*
+&lt;closure&gt;    &lt;closure&gt;    ScmClosure*
+&lt;promise&gt;    &lt;promise&gt;    ScmPromise*
+
+&lt;class&gt;      &lt;class&gt;      ScmClass*
+&lt;method&gt;     &lt;method&gt;     ScmMethod*
+&lt;module&gt;     &lt;module&gt;     ScmModule*
+&lt;thread&gt;     &lt;thread&gt;     ScmVM*
+&lt;mutex&gt;      &lt;mutex&gt;      ScmMutex*
+&lt;condition-variable&gt; &lt;condition-variable&gt; ScmConditionVariable*
+</pre></div>
+
+<p>A stub type can have a <em>maybe</em> variation, denoted by
+<code>?</code> suffix; e.g. <code>&lt;string&gt;?</code>.  It is a union type of
+the base type and boolean false (for <code>&lt;string&gt;?</code>, it
+can be either <code>&lt;string&gt;</code> or <code>#f</code>.)   In the C world,
+boolean false is mapped to <code>NULL</code> pointer.  It is convenient
+to pass a C value that allowed to be NULL back and forth&mdash;if
+you pass <code>#f</code> from the Scheme world it comes out <code>NULL</code> to
+the C world, and vice versa.   The maybe variation is only
+meaningful when the C type is a pointer type.
+</p>
+<dl>
+<dt><a name="index-_003ccgen_002dtype_003e"></a>Class: <strong>&lt;cgen-type&gt;</strong></dt>
+<dd><a name="index-cgen_002dtype"></a>
+<p>{<tt>gauche.cgen</tt>}
+An instance of this class represents a stub type.
+It can be looked up by name such as <code>&lt;const-cstring&gt;</code> by
+<code>cgen-type-from-name</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dtype_002dfrom_002dname"></a>Function: <strong>cgen-type-from-name</strong> <em>name</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+Returns an instance of <code>&lt;cgen-type&gt;</code> that has <var>name</var>.
+If the name is unknown, <code>#f</code> is returned.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dbox_002dexpr"></a>Function: <strong>cgen-box-expr</strong> <em>cgen-type c-expr</em></dt>
+<dt><a name="index-cgen_002dunbox_002dexpr"></a>Function: <strong>cgen-unbox-expr</strong> <em>cgen-type c-expr</em></dt>
+<dt><a name="index-cgen_002dpred_002dexpr"></a>Function: <strong>cgen-pred-expr</strong> <em>cgen-type c-expr</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+<var>c-expr</var> is a string denotes a C expression.
+Returns a string of C expression that boxes, unboxes, or
+typechecks the <var>c-expr</var> according to the <var>cgen-type</var>.
+</p>
+<div class="example">
+<pre class="example">;; suppose foo() returns char*
+(cgen-box-expr
+ (cgen-type-from-name '&lt;const-cstring&gt;)
+ &quot;foo()&quot;)
+ &rArr; &quot;SCM_MAKE_STR_COPYING(foo())&quot;
+</pre></div>
+</dd></dl>
+
+
+<hr>
+<a name="C-in-S-expression"></a>
+<div class="header">
+<p>
+Previous: <a href="#Conversions-between-Scheme-and-C" accesskey="p" rel="prev">Conversions between Scheme and C</a>, Up: <a href="#Generating-C-code" accesskey="u" rel="up">Generating C code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="CiSE-_002d-C-in-S-expression"></a>
+<h4 class="subsection">9.3.4 CiSE - C in S expression</h4>
+
+<p>Some low-level routines in Gauche are implemented in C, but they&rsquo;re
+written in S-expression.  We call it &ldquo;C in S expression&rdquo;, or <em>CiSE</em>.
+</p>
+<p>The advantage of using S-expression is its readability, obviously.
+Another advantage is that it allows us to write macros as
+S-expr to S-expr translation, just like the legacy Scheme macros.
+That&rsquo;s a powerful feature&mdash;effectively you can extend C language
+to suit your needs.
+</p>
+<p>The <code>gauche.cgen.cise</code> module provides a set of tools to convert
+CiSE code into C code to be passed to the C compiler.  It also has
+some support to overcome C quirks, such as preparing forward
+declarations.
+</p>
+<p>Currently, we don&rsquo;t do rigorous check for CiSE; you can pass a
+CiSE that yields invalid C code, which will cause the C compiler
+to emit errors.  The translater inserts line directives by default so the
+C compiler error message points to the location of original (CiSE) source
+instead of generated code; however, sometimes you need to look at
+the generated code to figure out what went wrong.  We hope this
+will be improved in future.
+</p>
+<p>In Gauche source code, CiSE is extensively used in precompiled Scheme
+files and recognized by the precompiler (<code>precomp</code>).  However,
+<code>gauche.cgen.cise</code> is an independent module only relies
+on <code>gauche.cgen</code> basic features, so you can plug it
+to your own C code generating programs.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#CiSE-overview" accesskey="1">CiSE overview</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#CiSE-syntax" accesskey="2">CiSE syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#CiSE-procedures" accesskey="3">CiSE procedures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="CiSE-overview"></a>
+<div class="header">
+<p>
+Next: <a href="#CiSE-syntax" accesskey="n" rel="next">CiSE syntax</a>, Previous: <a href="#C-in-S-expression" accesskey="p" rel="prev">C in S expression</a>, Up: <a href="#C-in-S-expression" accesskey="u" rel="up">C in S expression</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="CiSE-overview-1"></a>
+<h4 class="subsubsection">9.3.4.1 CiSE overview</h4>
+
+<p>Before diving into the details, it&rsquo;s easier to grasp
+some basic concepts.
+</p>
+<p>A <em>CiSE fragment</em> is an S-expression that follows
+CiSE syntax (see <a href="#CiSE-syntax">CiSE syntax</a>).  A CiSE fragment can be
+translated to C code by <code>cise-render</code> to a C code fragment.
+Note that some translation may not be local, meaning it may
+want to emit forward declarations before other C code fragments.
+So, the full translation requires buffering&mdash;you process all
+the CiSE fragments and saves output, emit forward declarations,
+then emit the saved C code fragments.  We have a wrapper procedure,
+<code>cise-translate</code>, to take care of it, but for your purpose
+you may want to roll your own wrapper.
+</p>
+<p>A <em>CiSE macro</em> is a Scheme code that translates a CiSE
+fragment to another CiSE fragment.  There are number of
+predefined CiSE macros.  You can add your own CiSE macros by
+utilities such as
+<code>define-cise-stmt</code> and <code>define-cise-expr</code>.
+</p>
+<p>A <em>CiSE ambient</em> is a bundle of information that affects
+fragment translation.  It contains CiSE macro definitions,
+and also it keeps track of forward declarations.
+</p>
+<hr>
+<a name="CiSE-syntax"></a>
+<div class="header">
+<p>
+Next: <a href="#CiSE-procedures" accesskey="n" rel="next">CiSE procedures</a>, Previous: <a href="#CiSE-overview" accesskey="p" rel="prev">CiSE overview</a>, Up: <a href="#C-in-S-expression" accesskey="u" rel="up">C in S expression</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="CiSE-syntax-1"></a>
+<h4 class="subsubsection">9.3.4.2 CiSE syntax</h4>
+
+
+<hr>
+<a name="CiSE-procedures"></a>
+<div class="header">
+<p>
+Previous: <a href="#CiSE-syntax" accesskey="p" rel="prev">CiSE syntax</a>, Up: <a href="#C-in-S-expression" accesskey="u" rel="up">C in S expression</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="CiSE-procedures-1"></a>
+<h4 class="subsubsection">9.3.4.3 CiSE procedures</h4>
+
+
+<dl>
+<dt><a name="index-cise_002dambient"></a>Parameter: <strong>cise-ambient</strong></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002ddefault_002dambient"></a>Function: <strong>cise-default-ambient</strong></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002dambient_002dcopy"></a>Function: <strong>cise-ambient-copy</strong> <em>ambient</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002dambient_002ddecl_002dstrings"></a>Function: <strong>cise-ambient-decl-strings</strong> <em>ambient</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002demit_002dsource_002dline"></a>Parameter: <strong>cise-emit-source-line</strong></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002drender"></a>Function: <strong>cise-render</strong> <em>cise-fragment :optional port context</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002drender_002dto_002dstring"></a>Function: <strong>cise-render-to-string</strong> <em>cise-fragment :optional context</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002drender_002drec"></a>Function: <strong>cise-render-rec</strong> <em>cise-fragment stmt/expr env</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002dtranslate"></a>Function: <strong>cise-translate</strong> <em>inp outp :key environment</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-cise_002dregister_002dmacro_0021"></a>Function: <strong>cise-register-macro!</strong> <em>name expander :optional ambient</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cise_002dlookup_002dmacro"></a>Function: <strong>cise-lookup-macro</strong> <em>name :optional ambient</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-define_002dcise_002dstmt"></a>Macro: <strong>define-cise-stmt</strong> <em>name [env] clause &hellip; [:where definition &hellip;]</em></dt>
+<dt><a name="index-define_002dcise_002dexpr"></a>Macro: <strong>define-cise-expr</strong> <em>name [env] clause &hellip; [:where definition &hellip;]</em></dt>
+<dt><a name="index-define_002dcise_002dtoplevel"></a>Macro: <strong>define-cise-toplevel</strong> <em>name [env] clause &hellip; [:where definition &hellip;]</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-define_002dcise_002dmacro"></a>Macro: <strong>define-cise-macro</strong> <em>(name form env) body &hellip;</em></dt>
+<dt><a name="index-define_002dcise_002dmacro-1"></a>Macro: <strong>define-cise-macro</strong> <em>name name2</em></dt>
+<dd><p>{<tt>gauche.cgen</tt>}
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#CiSE-syntax" accesskey="p" rel="prev">CiSE syntax</a>, Up: <a href="#C-in-S-expression" accesskey="u" rel="up">C in S expression</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Function-and-Syntax-Index.html#Function-and-Syntax-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+<hr><div style="width:100%" class="footer"><p style="text-align:center"><a href="https://practical-scheme.net/gauche/memo.html">For Gauche 0.9.6</a></p></div>
+</body>
+</html>

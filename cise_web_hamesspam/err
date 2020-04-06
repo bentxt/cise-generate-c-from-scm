@@ -1,0 +1,33 @@
+*** ERROR: cise: statement appears in an expression context: (dotimes (i n) (case (% (+ i 1) 15) ((0) (printf "FizzBuzz\n")) ((3 6 9 12) (printf "Fizz\n")) ((5 10) (printf "Buzz\n")) (else (printf "%d\n" (+  ...
+Stack Trace:
+_______________________________________
+  0  (ensure-stmt-ctx form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":782
+  1  (expander form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+  2  (render-rec (expander form env) env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+  3  (map (cut render-rec <> eenv) args)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":368
+  4  (intersperse "," (map (cut render-rec <> eenv) args))
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":368
+  5  (map (cut render-rec <> env) (cdr form))
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":592
+  6  (expander form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+  7  (render-rec (expander form env) env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+  8  (render-rec form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":311
+  9  (cise-render-to-string `(begin ,@body) 'stmt)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":463
+ 10  (expander form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+ 11  (render-rec (expander form env) env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":359
+ 12  (render-rec form env)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":311
+ 13  (cise-render f toutp 'toplevel)
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":432
+ 14  (let loop ((toutp outp)) (match (read inp) ((? eof-object?) ( ...
+        at "/usr/local/Cellar/gauche/0.9.6/share/gauche-0.9/0.9.6/lib/gauche/cgen/cise.scm":419

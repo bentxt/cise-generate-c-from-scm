@@ -1,0 +1,26 @@
+;;;
+;;; dyncomplib.stub
+;;;
+
+"
+#include \"dyncomp.h\"
+"
+
+(define-cproc clear-code (mod)
+  (call "ClearCode"))
+
+(define-cproc add-include-path (mod path::<const-cstring>)
+  (call "AddIncludePath"))
+
+(define-cproc compile-c-code (mod src_code::<const-cstring>)
+  (call "CompileCCode"))
+
+(define-cproc make-subr (mod info req::<int> opt::<int> sym::<const-cstring>)
+  (call "MakeSubr"))
+
+(define-cproc load-library (filename::<const-cstring>)
+  (call "LoadDynamicLibrary"))
+
+;; Local variables:
+;; mode: scheme
+;; end:

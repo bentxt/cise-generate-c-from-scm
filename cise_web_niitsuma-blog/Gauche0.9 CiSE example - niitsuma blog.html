@@ -1,0 +1,1072 @@
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>Gauche0.9 CiSE example - niitsuma blog</title>
+<link rel="start" href="/" title="niitsuma blog">
+<link rel="help" href="/help" title="ヘルプ">
+<link rel="prev" href="/niitsuma/20081113/1317186899" title="[scheme] give up run lalr-scm ...">
+<link rel="next" href="/niitsuma/20081113/1274263975" title="[scheme]stalingrad">
+
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/css/base.css?07618f388c0425a42ed1b087de443bcfa0a98a9d" type="text/css" media="all">
+
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/theme/hatena/hatena.css?628a5c411040c3a6c6a8c02a4c73073a55db6272" type="text/css" media="all">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://d.hatena.ne.jp/niitsuma/rss">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://d.hatena.ne.jp/niitsuma/rss2">
+
+<link rel="meta" type="application/rdf+xml" title="FOAF" href="http://d.hatena.ne.jp/niitsuma/foaf" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/niitsuma/opensearch/diary.xml" title="niitsuma blog内日記検索" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/niitsuma/opensearch/archive.xml" title="niitsuma blog内一覧検索" />
+
+
+
+<link rel="shortcut icon" href="http://d.hatena.ne.jp/images/de_favicon.ico">
+
+
+
+<link rel="canonical" href="http://d.hatena.ne.jp/niitsuma/20081113/1281521109">
+
+
+<style type="text/css">
+<!-- 
+
+-->
+</style>
+
+
+<script type="text/javascript">if(/[\x3c\x3e\x22]/.test(location.hash))location.hash=location.hash.replace(/[\x3c\x3e\x22]/g,'');if(/[\x3c\x3e]/.test(document.referrer))location.href=location.href;</script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gauche0.9 CiSE example - niitsuma blog">
+<meta property="og:url" content="http://d.hatena.ne.jp/niitsuma/20081113/1281521109">
+<meta property="og:description" content="全般link col Introduction to Programming using Lisp http://www.botnode.com/newspirit/lispstart.htmll..">
+<meta property="og:site_name" content="はてなダイアリー">
+
+
+<!--
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<rdf:Description rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1281521109">
+   <foaf:maker rdf:parseType="Resource">
+     <foaf:holdsAccount>
+       <foaf:OnlineAccount foaf:accountName="niitsuma">
+         <foaf:accountServiceHomepage rdf:resource="http://www.hatena.ne.jp/" />
+       </foaf:OnlineAccount>
+     </foaf:holdsAccount>
+   </foaf:maker>
+</rdf:Description>
+</rdf:RDF>
+-->
+
+<link rel="alternate" media="handheld" type="text/html" href="http://d.hatena.ne.jp/niitsuma/mobile?date=20081113&section=1281521109" />
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113"
+  dc:title="[lisp]scheme"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1226975086"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1226975086"
+  dc:title="[schme][emacs]scheme emacs dev env"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1226975086" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1274076671"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1274076671"
+  dc:title="[scheme][SICP]stalin can not optimize stream"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1274076671" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1274316904"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1274316904"
+  dc:title="[scheme]stalin bug"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1274316904" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1274263975"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1274263975"
+  dc:title="[scheme]stalingrad"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1274263975" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1281521109"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1281521109"
+  dc:title="[scheme]Gauche0.9 CiSE example"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1281521109" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1317186899"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1317186899"
+  dc:title="[scheme] give up run lalr-scm in racket"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1317186899" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1318387016"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1318387016"
+  dc:title="[scheme] match macro difference"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1318387016" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1318407800"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1318407800"
+  dc:title="[scheme] schelog %let danger"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1318407800" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1324318325"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1324318325"
+  dc:title="[scheme]schelog %= %=="
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1324318325" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1324207155"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1324207155"
+  dc:title="[scheme] fuild-let example"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1324207155" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1324207362"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1324207362"
+  dc:title="[scheme] racket module nest and global variable"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1324207362" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1390320372"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1390320372"
+  dc:title=" miniKanren入門"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1390320372" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1346834459"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1346834459"
+  dc:title="[scheme] Scheme? -&gt; cKanren"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1346834459" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1346919753"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1346919753"
+  dc:title="[scheme]cKanren Racket"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1346919753" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1372410009"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1372410009"
+  dc:title="[scheme] recursive miniKanren"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1372410009" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1380266065"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1380266065"
+  dc:title=" [scheme] miniKanrenで画像処理"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1380266065" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1380260171"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1380260171"
+  dc:title=" [scheme] miniKanren matche macro with ”...” pattarn"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1380260171" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1380260466"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1380260466"
+  dc:title=" [scheme] miniKanren util"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1380260466" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1380268604"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1380268604"
+  dc:title=" [scheme] srfi 53 "
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1380268604" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1384906280"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1384906280"
+  dc:title="Racket(emacsとC＋＋ユーザー向け)入門"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1384906280" />
+</rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/niitsuma/20081113/1389747366"
+  trackback:ping="http://d.hatena.ne.jp/niitsuma/20081113/1389747366"
+  dc:title=" unit test"
+  dc:identifier="http://d.hatena.ne.jp/niitsuma/20081113/1389747366" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Base.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Iter.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/DOM.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Style.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Signal.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Async.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Logging.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/BookmarkCommentViewer.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc" charset="utf-8"></script>
+
+
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:site" content="@hatenadiary">
+
+
+
+<script type="text/javascript" src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+<script type="text/javascript">
+Hatena.Star.SiteConfig = {
+  entryNodes: {
+    'div.section': {
+      uri: 'h3 a',
+      title: 'h3',
+      container: 'h3'
+    }
+  }
+};
+Hatena.Author  = new Hatena.User('niitsuma');
+Hatena.DiaryName  = new Hatena.User('niitsuma');
+
+</script>
+
+
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/adcolor.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/quick_pager.js?73e8efd3adc8709460b4c8ff9af5a3d4c97eba4e"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/diary_utils.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/max_width_fotolife.js?2d5c0a4915fdb8930122a506dbf154b9db674a3b"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/jquery-1.4.2.min.js?af12586c7bd8ed91af534bbc74eaae3171ae86fc"></script>
+<script type="text/javascript">
+  jQuery.noConflict()(function($){
+    var j$ = jQuery;
+  });
+</script>
+
+
+
+
+</head>
+<body>
+
+  <script>Hatena.Diary.UaTrakingID = 'UA-46127385-1';</script>
+ 
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-58NPH6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-58NPH6');</script>
+<!-- End Google Tag Manager -->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.6&appId=189164841141201";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0" id="banner">
+<tr>
+<td bgcolor="#1841CE" nowrap>
+<a href="http://www.hatena.ne.jp/"><img border="0" src="http://d.hatena.ne.jp/images/hatena_de.gif" width="104" height="40" alt="Hatena::"></a><a href="http://d.hatena.ne.jp/"><img border="0" src="http://d.hatena.ne.jp/images/diaryde.gif" width="60" height="40" alt="ブログ(Diary)"></a></td>
+<td valign="bottom" align="left" bgcolor="#1841CE" width="60%" nowrap><form method="GET" action="/search" style="margin: 0;"><font color="#5279E7" size="2">&nbsp;&nbsp;<input type="text" name="word" value="" size="18" style="font-size: 8pt">&nbsp;<input type="hidden" name="name" value="niitsuma"><input type="image" name="diary" alt="日記" src="http://d.hatena.ne.jp/images/search_diaryde.gif" align="top" style="width:34px;height:20px;border:0px">&nbsp;<input type="image" name="submit" alt="検索" src="http://d.hatena.ne.jp/images/searchde.gif" align="top" style="width:34px;height:20px;border:0px"><br><img border="0" src="http://d.hatena.ne.jp/images/dot.gif" width="1" height="3" alt=""></font></form></td>
+<td align="right" bgcolor="#1841CE"><a href="http://www.hatena.ne.jp/"><img border="0" src="http://d.hatena.ne.jp/images/hatenade.gif" width="82" height="40" alt="はてな"></a></td>
+</tr>
+<tr>
+<td width="100%" bgcolor="#06289B" colspan="3"><img border="0" src="http://d.hatena.ne.jp/images/dot.gif" width="1" height="1" alt=""></td>
+</tr>
+<tr>
+<td width="100%" bgColor="#ffffff" colspan="3">
+<div align="center">
+<center>
+<table cellSpacing="0" cellPadding="2" width="100%" border="0">
+<tbody>
+<tr>
+<td bgcolor="#5279E7" width="50%" nowrap><font color="#C9D5F8" size="2">&nbsp;ようこそゲストさん&nbsp;</font></td>
+<td bgcolor="#5279E7" nowrap align="center"><a href="http://d.hatena.ne.jp/niitsuma/" style="text-decoration:none; font-weight:100;"><font size="2" color="#C9D5F8">ブログトップ</font></a></td>
+<td bgcolor="#5279E7" nowrap align="center"><a href="http://d.hatena.ne.jp/niitsuma/archive" style="text-decoration:none; font-weight:100;"><font size="2" color="#C9D5F8">記事一覧</font></a></td>
+<td bgcolor="#5279E7" nowrap align="center"><a href="https://www.hatena.ne.jp/login?backurl=http%3A%2F%2Fd.hatena.ne.jp%2Fniitsuma%2F20081113%2F1281521109&add_timestamp=1" style="text-decoration:none; font-weight:100;"><font size="2" color="#C9D5F8">ログイン</font></a></td><td bgcolor="#5279E7" nowrap align="center"><a href="https://www.hatena.ne.jp/register?location=http%3A%2F%2Fd.hatena.ne.jp%3Fvia%3D200186&amp;via=200186" style="text-decoration:none; font-weight:100;"><font size="2" color="#C9D5F8">無料ブログ開設</font></a></td>
+
+
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+</td>
+</tr>
+<tr>
+<td width="100%" bgcolor="#06289B" colspan="3"><img border="0" src="http://d.hatena.ne.jp/images/dot.gif" width="1" height="1" alt=""></td>
+</tr>
+</table>
+
+
+
+<h1>niitsuma blog <a href="http://a.hatena.ne.jp/append?http://d.hatena.ne.jp/niitsuma/"><img src="http://d.hatena.ne.jp/images/a_append_de.gif" title="このページをアンテナに追加" alt="このページをアンテナに追加" border="0" width="16" height="12" class="icon"></a> <a href="http://d.hatena.ne.jp/niitsuma/rss"><img src="http://d.hatena.ne.jp/images/rss_de.gif" alt="RSSフィード" title="RSSフィード" border="0" width="24" height="12" class="icon"></a></h1>
+<div class="hatena-body">
+<div class="main">
+
+<div class="ad">
+<script type="text/javascript"><!--
+google_ad_client = "pub-4438296558807254";
+google_alternate_ad_url = "http://d.hatena.ne.jp/altad?mode=468x60&color_border=ffffff&color_ads=ffffff";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_channel ="5901068518";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_border = "5279E7";
+google_color_bg = "FFFFFF";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"><!--
+(function(){
+  if( !Ten ) return;
+  var sel = ['google_color_border','google_color_bg','google_color_link','google_color_url','google_color_text'];
+  var l = sel.length;
+  for( var i=0; i<l; i++ ){
+    var prop = Ten.Style.getGlobalStyle('.'+sel[i],'color');
+    if( prop ){
+      var color = Ten.Color.parseFromString(prop);
+      if( color )
+         window[sel[i]] = color.asHexString().slice(1);
+    }
+  }
+}
+)();
+//--></script>
+
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="calendar" id="pager-top">
+  <a rel="prev" href="/niitsuma/20081113/1317186899" class="prev">&lt;[scheme] give up run lalr-scm ...</a>&nbsp;<span class="delimiter">|</span>&nbsp;<a rel="next" href="/niitsuma/20081113/1274263975" class="next">[scheme]stalingrad&gt;</a><span id="edit-in-place-add"></span>
+</div>
+<div id="days">
+
+<div class="day">
+<h2><a href="http://d.hatena.ne.jp/niitsuma/20081113" rel="nofollow"><span class="date">2008-11-13</span></a> <span class="title">[lisp]scheme</span></h2>
+
+<div class="body">
+
+<!-- rakuten_ad_target_begin -->
+<!-- google_ad_section_start -->
+
+		<div class="section">
+			<h3><a href="/niitsuma/20081113/1281521109" name="1281521109"><span class="sanchor">■</span></a>[<a href="/niitsuma/searchdiary?word=%2A%5Bscheme%5D" class="sectioncategory">scheme</a>]Gauche0.9 CiSE example</h3>
+			<p>CiSE usage </p>
+			<h4> simple example cise</h4>
+<pre class="syntax-highlight">
+<span class="synComment">;save as cise-simple-example.scm</span>
+
+<span class="synSpecial">(</span>define-cise-stmt <span class="synSpecial">(</span>mywhen test<span class="synStatement"> . </span>body<span class="synSpecial">)</span>
+  <span class="synPreProc">`(</span><span class="synStatement">if</span> ,test <span class="synSpecial">(</span>begin ,@body<span class="synSpecial">)</span><span class="synPreProc">)</span><span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cfn test1 <span class="synSpecial">(</span>aa::int  <span class="synSpecial">)</span> ::void
+  <span class="synSpecial">(</span>mywhen <span class="synSpecial">(</span><span class="synStatement">&gt;</span> aa  <span class="synConstant">50</span> <span class="synSpecial">)</span>  <span class="synSpecial">(</span>test2<span class="synSpecial">))</span> 
+<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cfn test2 <span class="synSpecial">(</span>argc::int argv::char**<span class="synSpecial">)</span> ::int
+  <span class="synSpecial">(</span><span class="synStatement">dotimes</span> [i <span class="synSpecial">(</span>strlen <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">))</span>] <span class="synSpecial">(</span>printf <span class="synConstant">&quot;%02x&quot;</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">)</span> i<span class="synSpecial">)))</span>
+<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cfn main <span class="synSpecial">(</span>argc::int argv::char**<span class="synSpecial">)</span> ::int
+  <span class="synSpecial">(</span><span class="synStatement">dotimes</span> [i <span class="synSpecial">(</span>strlen <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">))</span>] <span class="synSpecial">(</span>printf <span class="synConstant">&quot;%02x&quot;</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">)</span> i<span class="synSpecial">)))</span>
+<span class="synSpecial">)</span>
+</pre>
+
+<pre class="syntax-highlight">
+<span class="synComment">;compile cise-simple-example.scm</span>
+<span class="synSpecial">(</span>use gauche.cgen<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.cgen.cise<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>call-with-output-file <span class="synConstant">&quot;cise-simple-example.c&quot;</span>
+    <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>po<span class="synSpecial">)</span>
+      <span class="synSpecial">(</span>cise-translate <span class="synSpecial">(</span>open-input-file <span class="synConstant">&quot;cise-simple-example.scm &quot;</span><span class="synSpecial">)</span> po<span class="synSpecial">)))</span>
+</pre>
+
+			<p>generated C code</p>
+<pre class="syntax-highlight">
+<span class="synPreProc">#line </span><span class="synConstant">5</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+ <span class="synType">void</span> test1(<span class="synType">int</span> aa){{
+<span class="synPreProc">#line </span><span class="synConstant">6</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+<span class="synStatement">if</span> ((aa)&gt;(<span class="synConstant">50</span>)){{test2();}}}}
+<span class="synPreProc">#line </span><span class="synConstant">9</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+ <span class="synType">int</span> test2(<span class="synType">int</span> argc,<span class="synType">char</span>** argv){{
+<span class="synPreProc">#line </span><span class="synConstant">10</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+{<span class="synType">int</span> i=<span class="synConstant">0</span>;<span class="synType">int</span> cise__628=strlen((argv)[<span class="synConstant">0</span>]);<span class="synStatement">for</span> (; (i)&lt;(cise__628); (i)++){printf(<span class="synConstant">&quot;</span><span class="synSpecial">%02x</span><span class="synConstant">&quot;</span>,((argv)[<span class="synConstant">0</span>])[i]);}}}}
+<span class="synPreProc">#line </span><span class="synConstant">13</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+ <span class="synType">int</span> main(<span class="synType">int</span> argc,<span class="synType">char</span>** argv){{
+<span class="synPreProc">#line </span><span class="synConstant">14</span><span class="synPreProc"> </span><span class="synConstant">&quot;cise-simple-example.scm&quot;</span>
+{<span class="synType">int</span> i=<span class="synConstant">0</span>;<span class="synType">int</span> cise__629=strlen((argv)[<span class="synConstant">0</span>]);<span class="synStatement">for</span> (; (i)&lt;(cise__629); (i)++){printf(<span class="synConstant">&quot;</span><span class="synSpecial">%02x</span><span class="synConstant">&quot;</span>,((argv)[<span class="synConstant">0</span>])[i]);}}}}
+</pre>
+
+			<h4> simple example cise.stub</h4>
+<pre class="syntax-highlight">
+<span class="synComment">;save as stub-simple-example.scm</span>
+<span class="synSpecial">(</span>declcode <span class="synSpecial">(</span>.include &lt;stdio.h&gt;<span class="synSpecial">)</span>
+ <span class="synConstant">&quot;#ifndef M_PI</span>
+<span class="synConstant">#define M_PI 3.1415926535897932384</span>
+<span class="synConstant">#endif&quot;</span>
+<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cise-stmt <span class="synSpecial">(</span>mywhen test<span class="synStatement"> . </span>body<span class="synSpecial">)</span>
+  <span class="synPreProc">`(</span><span class="synStatement">if</span> ,test <span class="synSpecial">(</span>begin ,@body<span class="synSpecial">)</span><span class="synPreProc">)</span><span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cfn test1 <span class="synSpecial">(</span>aa::int  <span class="synSpecial">)</span> ::void
+  <span class="synSpecial">(</span>mywhen <span class="synSpecial">(</span><span class="synStatement">&gt;</span> aa  <span class="synConstant">50</span> <span class="synSpecial">)</span>  <span class="synSpecial">(</span>test2<span class="synSpecial">))</span> 
+<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>define-cfn test2 <span class="synSpecial">(</span>argc::int argv::char**<span class="synSpecial">)</span> ::int
+  <span class="synSpecial">(</span><span class="synStatement">dotimes</span> [i <span class="synSpecial">(</span>strlen <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">))</span>] <span class="synSpecial">(</span>printf <span class="synConstant">&quot;%02x&quot;</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> <span class="synSpecial">(</span><span class="synStatement">aref</span> argv <span class="synConstant">0</span><span class="synSpecial">)</span> i<span class="synSpecial">)))</span>
+<span class="synSpecial">)</span>
+
+</pre>
+
+<pre class="syntax-highlight">
+<span class="synComment">;compile stub-simple-example.scm</span>
+<span class="synSpecial">(</span>use gauche.parseopt<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.parameter<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.cgen<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.cgen.stub<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use file.util<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use util.match<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>cgen-genstub <span class="synConstant">&quot;stub-simple-example.scm&quot;</span><span class="synSpecial">)</span>
+
+</pre>
+
+			<p>generated C code</p>
+<pre class="syntax-highlight">
+<span class="synPreProc">#include </span><span class="synConstant">&lt;gauche.h&gt;</span>
+
+<span class="synPreProc">#line </span><span class="synConstant">2</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+<span class="synPreProc">#include </span><span class="synConstant">&lt;stdio.h&gt;</span>
+
+<span class="synPreProc">#ifndef M_PI</span>
+<span class="synPreProc">#define </span><span class="synConstant">M_PI</span><span class="synPreProc"> </span><span class="synConstant">3.1415926535897932384</span>
+<span class="synPreProc">#endif</span>
+ <span class="synType">void</span> test1(<span class="synType">int</span> aa){{
+<span class="synPreProc">#line </span><span class="synConstant">12</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+<span class="synStatement">if</span> ((aa)&gt;(<span class="synConstant">50</span>)){{test2();}}}}
+ <span class="synType">int</span> test2(<span class="synType">int</span> argc,<span class="synType">char</span>** argv){{
+<span class="synPreProc">#line </span><span class="synConstant">16</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+{<span class="synType">int</span> i=<span class="synConstant">0</span>;<span class="synType">int</span> cise__871=strlen((argv)[<span class="synConstant">0</span>]);<span class="synStatement">for</span> (; (i)&lt;(cise__871); (i)++){printf(<span class="synConstant">&quot;</span><span class="synSpecial">%02x</span><span class="synConstant">&quot;</span>,((argv)[<span class="synConstant">0</span>])[i]);}}}}
+<span class="synType">void</span> Scm_Init_stub_simple_example(ScmModule *mod){
+
+}
+
+</pre>
+
+			<br>
+
+			<h4> more example cise.stub</h4>
+<pre class="syntax-highlight">
+<span class="synComment">;compile stub-simple-example.scm</span>
+<span class="synComment">;generate stub-simple-example.c and  stub-simple-example.h</span>
+<span class="synSpecial">(</span>use gauche.parseopt<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.parameter<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.cgen<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use gauche.cgen.stub<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use file.util<span class="synSpecial">)</span>
+<span class="synSpecial">(</span>use util.match<span class="synSpecial">)</span>
+
+<span class="synSpecial">(</span>parameterize <span class="synSpecial">(</span>[cgen-current-unit
+                    <span class="synSpecial">(</span>make &lt;cgen-stub-unit&gt;
+                      <span class="synType">:name</span> <span class="synConstant">&quot;stub-simple-example&quot;</span>
+		      :c-file  <span class="synConstant">&quot;stub-simple-example.c&quot;</span>
+		      :h-file    <span class="synConstant">&quot;stub-simple-example.h&quot;</span>
+                      :preamble <span class="synSpecial">'(</span><span class="synConstant">&quot;/* Generated by my-genstub.  Do not edit. */&quot;</span><span class="synSpecial">)</span>
+                      :pre-decl <span class="synSpecial">'(</span><span class="synConstant">&quot;#define AAAA 3.14&quot;</span><span class="synSpecial">)</span>
+                      :init-prologue <span class="synConstant">&quot;void test111(int aaaaa);\n&quot;</span>
+		      <span class="synSpecial">)</span>
+		    ]
+	       <span class="synSpecial">)</span>
+	      <span class="synSpecial">(</span>with-input-from-file <span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+		<span class="synSpecial">(</span>cut port-fold
+		     <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>form decl-strings?<span class="synSpecial">)</span>
+		       <span class="synSpecial">(</span><span class="synStatement">cond</span> [<span class="synSpecial">(</span><span class="synStatement">and</span> decl-strings? <span class="synSpecial">(</span><span class="synStatement">string</span>? form<span class="synSpecial">))</span> <span class="synSpecial">(</span>cgen-decl form<span class="synSpecial">)</span> #t]
+			     [else <span class="synSpecial">(</span>cgen-stub-parse-form form<span class="synSpecial">)</span> #f]<span class="synSpecial">))</span>
+		     #t <span class="synStatement">read</span><span class="synSpecial">))</span>
+     
+	      <span class="synSpecial">(</span>cgen-emit-c <span class="synSpecial">(</span>cgen-current-unit<span class="synSpecial">))</span>
+	      <span class="synSpecial">(</span>cgen-emit-h <span class="synSpecial">(</span>cgen-current-unit<span class="synSpecial">))</span>
+<span class="synSpecial">)</span> 
+</pre>
+
+			<p>generated code</p>
+			<p>stub-simple-example.c</p>
+<pre class="syntax-highlight">
+<span class="synComment">/* Generated by my-genstub.  Do not edit. */</span>
+<span class="synPreProc">#define AAAA </span><span class="synConstant">3.14</span>
+<span class="synPreProc">#include </span><span class="synConstant">&lt;gauche.h&gt;</span>
+
+<span class="synPreProc">#line </span><span class="synConstant">2</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+<span class="synPreProc">#include </span><span class="synConstant">&lt;stdio.h&gt;</span>
+
+<span class="synPreProc">#ifndef M_PI</span>
+<span class="synPreProc">#define </span><span class="synConstant">M_PI</span><span class="synPreProc"> </span><span class="synConstant">3.1415926535897932384</span>
+<span class="synPreProc">#endif</span>
+ <span class="synType">void</span> test1(<span class="synType">int</span> aa){{
+<span class="synPreProc">#line </span><span class="synConstant">12</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+<span class="synStatement">if</span> ((aa)&gt;(<span class="synConstant">50</span>)){{test2();}}}}
+ <span class="synType">int</span> test2(<span class="synType">int</span> argc,<span class="synType">char</span>** argv){{
+<span class="synPreProc">#line </span><span class="synConstant">16</span><span class="synPreProc"> </span><span class="synConstant">&quot;stub-simple-example.scm&quot;</span>
+{<span class="synType">int</span> i=<span class="synConstant">0</span>;<span class="synType">int</span> cise__899=strlen((argv)[<span class="synConstant">0</span>]);<span class="synStatement">for</span> (; (i)&lt;(cise__899); (i)++){printf(<span class="synConstant">&quot;</span><span class="synSpecial">%02x</span><span class="synConstant">&quot;</span>,((argv)[<span class="synConstant">0</span>])[i]);}}}}
+<span class="synType">void</span> test1(<span class="synType">int</span> aa);
+
+}
+</pre>
+
+			<p>stub-simple-example.h</p>
+<pre class="syntax-highlight">
+<span class="synComment">/* Generated by my-genstub.  Do not edit. */</span>
+</pre>
+
+			<h4> cgen code in <a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a>-0.9</h4>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a>-0.9/lib/<a class="keyword" href="http://d.hatena.ne.jp/keyword/gauche">gauche</a>/cgen.<a class="keyword" href="http://d.hatena.ne.jp/keyword/scm">scm</a></p>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a>-0.9/lib/<a class="keyword" href="http://d.hatena.ne.jp/keyword/gauche">gauche</a>/cgen/*.<a class="keyword" href="http://d.hatena.ne.jp/keyword/scm">scm</a></p>
+			<h4> example in <a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a> 0.9</h4>
+			<p>in <a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a>-0.9/<a class="keyword" href="http://d.hatena.ne.jp/keyword/src">src</a>/</p>
+
+			<ul>
+				<li> builtin-syms.<a class="keyword" href="http://d.hatena.ne.jp/keyword/scm">scm</a></li>
+			</ul>
+			<p>usage </p>
+<pre class="syntax-highlight">
+mkdir gauche
+gosh builtin-syms.scm
+</pre>
+
+			<p>then generate builtin-syms.c <a class="keyword" href="http://d.hatena.ne.jp/keyword/gauche">gauche</a>/builtin-syms.c</p>
+
+			<ul>
+				<li>geninsn</li>
+			</ul>
+<pre class="syntax-highlight">
+mkdir -p ../lib/gauche/vm/
+mkdir gosh geninsn
+</pre>
+
+			<p>then generate vminsn.c <a class="keyword" href="http://d.hatena.ne.jp/keyword/gauche">gauche</a>/vminsn.h ../lib/<a class="keyword" href="http://d.hatena.ne.jp/keyword/gauche">gauche</a>/<a class="keyword" href="http://d.hatena.ne.jp/keyword/vm">vm</a>/insn.<a class="keyword" href="http://d.hatena.ne.jp/keyword/scm">scm</a></p>
+
+			<ul>
+				<li> vminsn.<a class="keyword" href="http://d.hatena.ne.jp/keyword/scm">scm</a></li>
+				<li> genstub and *.stub</li>
+			</ul>
+			<br>
+
+			<br>
+
+			<h4> 関連link </h4>
+
+			<ul>
+				<li>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/LLTV">LLTV</a>レポート】劇的ビフォーアフター、匠の技（中編） “本物の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A5%AF%A5%ED">マクロ</a>”でCのコード行数を半分に！ <a href="http://www.atmarkit.co.jp/news/200909/07/lltv02.html" target="_blank">http://www.atmarkit.co.jp/news/200909/07/lltv02.html</a></li>
+			</ul>
+
+			<ul>
+				<li> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Gauche">Gauche</a>:<a class="keyword" href="http://d.hatena.ne.jp/keyword/VM">VM</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BA%C7%C5%AC%B2%BD">最適化</a>:VMLoopの自動生成 <a href="http://practical-scheme.net/wiliki/wiliki.cgi?Gauche%3AVM%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%3AVMLoop%E3%81%AE%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90" target="_blank">http://practical-scheme.net/wiliki/wiliki.cgi?Gauche%3AVM%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%3AVMLoop%E3%81%AE%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90</a></li>
+			</ul>
+
+			<ul>
+				<li> dyncomp 0.1リリース <a href="http://d.hatena.ne.jp/koguro/20080622/1214134153" target="_blank">http://d.hatena.ne.jp/koguro/20080622/1214134153</a></li>
+			</ul>
+			<p class="sectionfooter"><a href="/niitsuma/20081113/1281521109">Permalink</a> | <a href="/niitsuma/20081113/1281521109#c">コメント(0)</a> | <a href="/niitsuma/20081113/1281521109#tb">トラックバック(0)</a> | 19:05 <a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/niitsuma/20081113/1281521109" class="bookmark-icon"><img src="http://d.hatena.ne.jp/images/b_entry_de.gif" border="0" title="Gauche0.9 CiSE exampleを含むブックマーク" alt="Gauche0.9 CiSE exampleを含むブックマーク" width="16" height="12" class="icon"></a> <a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/niitsuma/20081113/1281521109" class="bookmark-count"><img src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/niitsuma/20081113/1281521109" title="はてなブックマーク - Gauche0.9 CiSE example" alt=""></a> <img class="hatena-bcomment-view-icon" src="http://r.hatena.ne.jp/images/popup.gif" onclick="javascript:BookmarkCommentViewer.iconImageClickHandler(this, 'http://d.hatena.ne.jp/niitsuma/20081113/1281521109', event);" title="Gauche0.9 CiSE exampleのブックマークコメント" alt="Gauche0.9 CiSE exampleのブックマークコメント" width="13" height="13"></p>
+
+		</div>
+
+<div id="google_afc_user_1" class="section google_afc_user">
+</div>
+
+<script src="https://cdn.pool.st-hatena.com/valve/valve.js" async></script>
+<script>
+  valve = window.valve || [];
+  valve.push(function(v) {
+    v.config({
+      service: 'diary',
+      textSelector: 'div.body',
+    });
+  });
+</script>
+
+<script>
+  valve = window.valve || [];
+  valve.push(function(v) {
+    v.defineDFPSlot({
+        unit  :'/4374287/diary_user',
+        sizes : [[300, 250], [336, 280]],
+        slotId: 'google_afc_user_1',
+    });
+  });
+</script>
+
+<!-- google_ad_section_end -->
+<!-- rakuten_ad_target_end -->
+
+<div class="ad">
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-4438296558807254";
+google_alternate_ad_url = "http://d.hatena.ne.jp/altad?mode=468x60&color_border=ffffff&color_ads=ffffff";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text";
+google_ad_channel ="5901068518";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+
+<div class="ad">
+<div class="hatena-asin-recommend">
+<div class="hatena-asin-recommend-item-1">
+<div class="hatena-asin-recommend-image"><a href="http://d.hatena.ne.jp/asin/4781909345"><img src="https://images-fe.ssl-images-amazon.com/images/I/21ar3HTMmAL._SL60_.jpg" ALT="4781909345"></a></div>
+<div class="hatena-asin-recommend-info">
+<div class="hatena-asin-recommend-title"><a href="http://d.hatena.ne.jp/asin/4781909345"><img src="/images/hamazou_icons/icon-book.gif" border="0" align="left" alt="Book"> GIMP/GNUPLOT/Tgifで学ぶグラフィック処理―UNIX...</a></div>
+<div class="hatena-asin-recommend-description">
+  <a href="http://d.hatena.ne.jp/keyword/%A5%B5%A5%A4%A5%A8%A5%F3%A5%B9%BC%D2">サイエンス社</a> <a href="http://d.hatena.ne.jp/keyword/%B3%A7%CB%DC%B9%B8%CC%EF">皆本晃弥</a> <a href="http://d.hatena.ne.jp/keyword/%BA%E4%BE%E5%B5%AE%C7%B7">坂上貴之</a> <br />
+  
+</div>
+</div></div>
+<div class="hatena-asin-recommend-item-2">
+<div class="hatena-asin-recommend-image"><a href="http://d.hatena.ne.jp/asin/4797311452"><img src="https://images-fe.ssl-images-amazon.com/images/I/51BWZ448ENL._SL60_.jpg" ALT="4797311452"></a></div>
+<div class="hatena-asin-recommend-info">
+<div class="hatena-asin-recommend-title"><a href="http://d.hatena.ne.jp/asin/4797311452"><img src="/images/hamazou_icons/icon-book.gif" border="0" align="left" alt="Book"> gnuplotパーフェクト・マニュアル (whatis UNIX...</a></div>
+<div class="hatena-asin-recommend-description">
+  <a href="http://d.hatena.ne.jp/keyword/%A5%BD%A5%D5%A5%C8%A5%D0%A5%F3%A5%AF%A5%AF%A5%EA%A5%A8%A5%A4%A5%C6%A5%A3%A5%D6">ソフトバンククリエイティブ</a> <a href="http://d.hatena.ne.jp/keyword/%C0%EE%B8%B6%CC%AD">川原稔</a> <br />
+   クリック: 11回
+</div>
+</div></div>
+<div class="hatena-asin-recommend-foot"></div></div></div>
+
+
+</div>
+
+<form id="comment-form" method="post" action="/niitsuma/comment#c" class="comment">
+<input type="hidden" name="mode" value="enter">
+<input type="hidden" name="rkm" value="">
+<input type="hidden" name="date" value="2008-11-13">
+<div class="comment">
+  <div class="caption"><a name="c">コメントを書く</a></div>
+  <div class="commentshort">
+    
+    
+
+    <a name="error-message"></a>
+    <p class="message" style="display:none"></p>
+
+    
+
+    
+            
+    <p class="commentform">
+      <span class="commentator">
+        <span class="usermailconfirm"><input name="usermail" size="1" value=""><input name="userurl" size="1" value="">スパム対策のためのダミーです。もし見えても何も入力しないでください<br></span>
+        <span class="username">
+        <img src="http://www.hatena.ne.jp/images/guest_icon.gif" class="hatena-id-icon" alt="ゲスト" title="ゲスト" height="16" width="16">
+        <input type="hidden" name="section" value="1281521109">
+        
+          <input id="comment-username" name="username" size="15">
+        
+        </span>
+        
+          <span class="usermail"><img src="/images/icon-usermail.gif" style="vertical-align:middle;margin-right:3px;"><input id="comment-usermail" name="useremail" size="15" value=""></span>
+          <span class="userurl"><img src="/images/icon-userurl.gif" style="vertical-align:middle;margin-right:3px;"><input id="comment-userurl" name="useruri" size="15" value=""></span>
+        
+      </span>
+<br>
+      <!-- NOT_VERIFIED_COMMENT_AUTH -->
+      <textarea id="comment-textarea" name="body" value="" cols="60" rows="3"></textarea><br>
+      
+          <div class="captcha">
+            <img src="/niitsuma/captcha?1533730702" class="captcha-image">
+            <span class="captcha-message">画像認証</span><br />
+            <input type="text" name="captcha_code" size="10" class="captcha-string" id="comment-captcha">
+          </div>
+      
+      <span class="comment-submit"><input type="submit" id="comment-form-button" value="投稿"></span>
+    </p>
+
+      <script type="text/javascript" src="/js/diary_comment_edit_form.js"></script>
+    
+
+  </div>
+</div>
+
+</form>
+
+
+
+
+
+  
+  <div class="refererlist">
+    <div class="caption">
+      <a name="tb">トラックバック</a> - http://d.hatena.ne.jp/niitsuma/20081113/1281521109
+    </div>
+    
+  </div>
+  
+    <div class="refererlist">
+      <div class="caption"><a name="idtb">idトラックバック</a></div>
+      
+      <ul>
+        
+            <li><a href="http://d.hatena.ne.jp/niitsuma/20080125/1228194822" title=" link集 -http://halta.dip.jp/handmade/link.html &amp;lt;!-- id=”16094”;blogurl=”http://d.hatena.ne.jp/niitsuma/”;partstype=”w”;viewBlogparts(); // --&amp;gt;&amp;lt;/script&amp;gt; " rel="nofollow">niitsumaの日記 - link集</a></li>
+          
+        </ul>
+      </div>
+    
+  
+  
+  <div id="diary-pc-trackback-rectangle" style="margin-bottom: 15px;"></div>
+  <script src="https://cdn.pool.st-hatena.com/valve/valve.js" async></script>
+  <script>
+    valve = window.valve || [];
+    valve.push(function(v) {
+      v.config({
+        service: 'diary',
+        textSelector: 'div.body',
+        
+      });
+      v.defineDFPSlot({
+          unit  :'/4374287/diary_user_track',
+          sizes : [[300,250], [336,280]],
+          slotId: 'diary-pc-trackback-rectangle',
+      });
+      v.sealDFPSlots();
+    });
+  </script>
+  <script id="valve-dmp" data-service="diary" src="https://cdn.pool.st-hatena.com/valve/dmp.js" async></script>
+  
+
+
+
+
+
+    <div class="refererlist">
+      <div class="caption">リンク元</div>
+      <ul>
+          <li>263 <a href="http://www.google.co.jp/search?hl=ja&amp;client=firefox-a&amp;rls=org.mozilla%3Aja%3Aofficial&amp;hs=JdI&amp;q=boost+python+numeric&amp;btnG=%E6%A4%9C%E7%B4%A2&amp;lr=lang_ja" rel="nofollow">http://www.google.co.jp/search?hl=ja&amp;client=firefox-a&amp;rls=org.mozilla:ja:official&amp;hs=JdI&amp;q=boost+python+numeric&amp;btnG=検索&amp;lr=lang_ja</a></li>
+          <li>156 <a href="http://www.google.co.jp/search?hl=ja&amp;lr=lang_ja&amp;client=firefox-a&amp;rls=org.mozilla:ja:official&amp;hs=UeT&amp;q=cmake+%E4%BD%BF%E3%81%84%E6%96%B9&amp;revid=678869898&amp;sa=X&amp;oi=revisions_inline&amp;resnum=1&amp;ct=broad-revision&amp;cd=1" rel="nofollow">http://www.google.co.jp/search?hl=ja&amp;lr=lang_ja&amp;client=firefox-a&amp;rls=org.mozilla:ja:official&amp;hs=UeT&amp;q=cmake+使い方&amp;revid=678869898&amp;sa=X&amp;oi=revisions_inline&amp;resnum=1&amp;ct=broad-revision&amp;cd=1</a></li>
+          <li>100 <a href="http://www.google.co.jp/search?sourceid=navclient&amp;hl=ja&amp;ie=UTF-8&amp;rlz=1T4SUNA_jaJP249JP249&amp;q=centos+gtag+install" rel="nofollow">http://www.google.co.jp/search?sourceid=navclient&amp;hl=ja&amp;ie=UTF-8&amp;rlz=1T4SUNA_jaJP249JP249&amp;q=centos+gtag+install</a></li>
+          <li>93 <a href="http://www.google.co.jp/search?hl=ja&amp;client=firefox-a&amp;rls=com.ubuntu%3Aja%3Aunofficial&amp;hs=bDe&amp;q=emacs+C%2B%2B&amp;btnG=%E6%A4%9C%E7%B4%A2&amp;lr=lang_ja" rel="nofollow">http://www.google.co.jp/search?hl=ja&amp;client=firefox-a&amp;rls=com.ubuntu:ja:unofficial&amp;hs=bDe&amp;q=emacs+C++&amp;btnG=検索&amp;lr=lang_ja</a></li>
+          <li>63 <a href="http://www.google.co.jp/search?q=cmake+%E4%BD%BF%E3%81%84%E6%96%B9&amp;lr=lang_ja&amp;ie=utf-8&amp;oe=utf-8&amp;aq=t&amp;rls=org.mozilla:ja:official&amp;client=firefox-a" rel="nofollow">http://www.google.co.jp/search?q=cmake+使い方&amp;lr=lang_ja&amp;ie=utf-8&amp;oe=utf-8&amp;aq=t&amp;rls=org.mozilla:ja:official&amp;client=firefox-a</a></li>
+          <li>53 <a href="http://www2s.biglobe.ne.jp/~niitsuma/" rel="nofollow">http://www2s.biglobe.ne.jp/~niitsuma/</a></li>
+          <li>49 <a href="http://www.google.com/search?hl=ja&amp;lr=lang_ja&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=yum+%E3%83%80%E3%82%A6%E3%83%B3%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89+%E6%96%B9%E6%B3%95&amp;safe=off&amp;num=100" rel="nofollow">http://www.google.com/search?hl=ja&amp;lr=lang_ja&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=yum+ダウングレード+方法&amp;safe=off&amp;num=100</a></li>
+          <li>45 <a href="http://d.hatena.ne.jp/" rel="nofollow">http://d.hatena.ne.jp/</a></li>
+          <li>43 <a href="http://www.google.co.jp/search?hl=ja&amp;safe=off&amp;client=firefox-a&amp;rls=org.mozilla%3Aen-US%3Aofficial&amp;hs=oa&amp;q=ctype+python&amp;btnG=%E6%A4%9C%E7%B4%A2&amp;lr=" rel="nofollow">http://www.google.co.jp/search?hl=ja&amp;safe=off&amp;client=firefox-a&amp;rls=org.mozilla:en-US:official&amp;hs=oa&amp;q=ctype+python&amp;btnG=検索&amp;lr=</a></li>
+          <li>41 <a href="http://www.google.co.jp/search?hl=ja&amp;q=cmake+%E4%BD%BF%E3%81%84%E6%96%B9&amp;lr=&amp;aq=1&amp;oq=cmake+" rel="nofollow">http://www.google.co.jp/search?hl=ja&amp;q=cmake+使い方&amp;lr=&amp;aq=1&amp;oq=cmake+</a></li>
+      </ul>
+      
+    </div>
+
+
+
+
+</div>
+
+
+
+</div>
+<div class="calendar" id="pager-bottom">
+  <a rel="prev" href="/niitsuma/20081113/1317186899" class="prev">&lt;[scheme] give up run lalr-scm ...</a>&nbsp;<span class="delimiter">|</span>&nbsp;<a rel="next" href="/niitsuma/20081113/1274263975" class="next">[scheme]stalingrad&gt;</a>
+</div>
+<div class="sidebar">
+
+
+
+
+
+
+	<div class="hatena-module hatena-module-sectioncategory">
+<div class="hatena-moduletitle">カテゴリー</div>
+<div class="hatena-modulebody">
+<ul class="hatena-sectioncategory">
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bemacs%5D">emacs</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bcmake%5D">cmake</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bboost%5D">boost</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bc%2B%2B%5D">c++</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Blinux%5D">linux</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bdebian%5D">debian</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bpython%5D">python</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bubuntu%5D">ubuntu</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bimage%20processing%5D">image processing</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Blisp%5D">lisp</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bcentos%5D">centos</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Betc%5D">etc</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5B%A5%CD%A5%BF%5D">ネタ</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bwindows%5D">windows</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5BR%5D">R</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bc%5D">c</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bmaxima%5D">maxima</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Beamcs%5D">eamcs</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bschme%5D">schme</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bscheme%5D">scheme</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5BSICP%5D">SICP</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Biphone%5D">iphone</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5Bgentoo%5D">gentoo</a></li>
+<li><a href="/niitsuma/searchdiary?word=%2A%5BJava%5D">Java</a></li>
+</ul>
+</div>
+</div>
+
+	
+<!-- -->
+
+
+<a href="http://awasete.com/show.phtml?u=http%3A%2F%2Fd.hatena.ne.jp%2Fniitsuma%2F"><img width="125" alt="あわせて読みたいブログパーツ" src="http://img.awasete.com/image.phtml?u=http%3A%2F%2Fd.hatena.ne.jp%2Fniitsuma%2F&s=1" height="125" border="0"></a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+  <script>
+    valve = window.valve || [];
+    valve.push(function(v) {
+        v.sealDFPSlots();
+    });
+  </script>
+  <script id="valve-dmp" data-service="diary" src="https://cdn.pool.st-hatena.com/valve/dmp.js" async></script>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var days = document.getElementById('days');
+  if (days && days.innerHTML.indexOf("今週のお題") != -1) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /\u4eca\u9031\u306e\u304a\u984c/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /ScanSnap\u7279\u5225\u30e2\u30c7\u30eb\u30fb\u30d6\u30ed\u30b0\u3067\u5ba3\u4f1d\u30b3\u30f3\u30c6\u30b9\u30c8/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'scansnap1401bcn4ssacro', 3]);
+  }
+
+  if (days && /\u7279\u5225\u304a\u984c\u300c\u9752\u6625\u306e\u4e00\u518a\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'pdmagazine', 3]);
+  }
+
+  if (days && /\u7279\u5225\u304a\u984c\u300c\u5fc3\u6e29\u307e\u308b\u30de\u30ca\u30fc\u306e\u8a71\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'jrwest', 3]);
+  }
+
+  if (days && /Presso\u4f7f\u3063\u3066\u307f\u305f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'presso1404', 3]);
+  }
+
+  if (days && /CodeIQ\u306e\u554f\u984c\u30fb\u30d1\u30ba\u30eb\u3092\u8003\u3048\u3088\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_2', 3]);
+  }
+
+  if (days && /2013\u5e74\u306b\u3084\u308a\u305f\u3044\u3053\u3068/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'newyear2013', 3]);
+  }
+
+  if (days && /2012\u5e74\u30dc\u30c4\u738b\u6c7a\u5b9a\u6226\uff01\u30d5\u30eb\u30bf\u88fd\u83d3\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'furuta', 3]);
+  }
+
+  if (days && /\u300c\u884c\u3063\u3066\u307f\u305f\u3044\u304a\u5e97\u30fb\u30ec\u30b9\u30c8\u30e9\u30f3\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'gnavi201512', 3]);
+  }
+
+  if (days && /\u6d77\u5916\u30c9\u30e9\u30de\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u89b3\u305f\u3044\uff01|\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u7b2c1\u8a71\u306e\u611f\u60f3\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u4eca\u3060\u304b\u3089\u8a00\u3048\u308b\u300c\u5618\u3092\u3064\u3044\u3066\u3057\u307e\u3063\u305f\u30a8\u30d4\u30bd\u30fc\u30c9\u300d\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3060\u307e\u3055\u308c\u305f\u3051\u3069\u3001\u8a31\u305b\u3066\u3057\u307e\u3063\u305f\u5618\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'lietome', 3]);
+  }
+
+  if (days && /\u30de\u30a4\u30d9\u30b9\u30c8\u30bd\u30f3\u30b02013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'mybestsong2013', 3]);
+  }
+
+  if (days && /\u7d0d\u6dbc\uff01\u307b\u3093\u3068\u306b\u3042\u3063\u305f\u6016\u3044\u30b3\u30fc\u30c9/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_1', 3]);
+  }
+
+  if (days && /\u590f\u306e\u5199\u771f2013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'photocon2013summer', 3]);
+  }
+
+  if (days && /Windows\/Office\u6b66\u52c7\u4f1d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'WindowsDevOpen', 3]);
+  }
+
+  if (days && /\u300c\u79c1\u306f\u3007\u3007\u738b\uff01\u300d\u30d0\u30a4\u30af\u738b\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bike-o', 3]);
+  }
+
+  if (days && /Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u8a66\u3057\u305f\u3044\uff01|Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u3001\u81ea\u5206\u306a\u3089\u3053\u3046\u4f7f\u3046\uff01|V\u30d7\u30ea\u30ab\u304c1\u4e07\u5186\u5206\u3042\u3063\u305f\u3089\u3001\u30cd\u30c3\u30c8\u3067\u4f55\u3092\u8cb7\u3044\u307e\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'vpreca', 3]);
+  }
+
+  if (days && /\u30a2\u30a4\u30c7\u30e0 \u30a8\u30f3\u30b8\u30cb\u30a2\u30ad\u30e3\u30ea\u30a2Hacks\u5171\u6709\u30d7\u30ed\u30b8\u30a7\u30af\u30c8|\u30a8\u30f3\u30b8\u30cb\u30a2\u3068\u3057\u3066\u306e\u3001\u3068\u3063\u3066\u304a\u304d\u306e\u30ad\u30e3\u30ea\u30a2Hacks\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3042\u306a\u305f\u304c\u30a8\u30f3\u30b8\u30cb\u30a2\u8ee2\u8077\u30b5\u30a4\u30c8\u3092\u4f5c\u308b\u306a\u3089\u3001\u3069\u3093\u306a\u30b5\u30a4\u30c8\u306b\u3057\u307e\u3059\u304b\uff1f|5\u5e74\u5f8c\u306e\u300c\u30a8\u30f3\u30b8\u30cb\u30a2\u306e\u50cd\u304d\u65b9\u300d\u306f\u3001\u3069\u3046\u5909\u308f\u3063\u3066\u3044\u3066\u307b\u3057\u3044\u3067\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'aidemcareer', 3]);
+  }
+
+  if (days && /\u306f\u3066\u306a\u30c0\u30a4\u30a2\u30ea\u30fc10\u5468\u5e74\u304a\u3081\u3067\u3068\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'hatenadiary10th', 3]);
+  }
+
+  if (days && /\u3086\u304f\u5e74\u304f\u308b\u5e742015/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', '2014-2015campaign', 3]);
+  }
+
+  if (days && /\u8aad\u307f\u653e\u984c\u3067\u30b3\u30b9\u30d1\u3088\u3057\uff01\u96fb\u5b50\u66f8\u7c4d\u30a2\u30d7\u30eayomel.jp\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'yomel', 3]);
+  }
+
+  if (days && /\u30bb\u30c4\u30e4\u30af\u30a8\u30b9\u30c8/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'setsuyaquest', 3]);
+  }
+
+  if (days && /\u79cb\u306e\u591c\u9577\u306f\u8aad\u66f8\u3068\u30d6\u30ed\u30b0/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bookreview2013fall', 3]);
+  }
+
+  if (days && /\u7279\u5225\u304a\u984c\u300c\u82b8\u8853\u306e\u79cb\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'caillebotte', 3]);
+  }
+
+  if (days && /\u30a8\u30a4\u30d7\u30ea\u30eb\u30d5\u30fc\u30eb2014/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'aprilfool2014', 3]);
+  }
+
+
+  _gaq.push(['c._setAccount', 'UA-2433998-1'], ['c._trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

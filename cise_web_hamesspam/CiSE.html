@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="piki.css" type="text/css" media="all" />
+<title>CiSE</title>
+</head>
+<body>
+<div id="main">
+
+<h1>CiSE</h1>
+<p>こんな田舎に住んでしても、結構いろいろな勧誘が来る。この間は、何とか互助会から来たぞ。
+葬式の未来予約ですな。人間確実に死ぬから、その争奪戦はすさまじいものがあるな。</p>
+<p>母が亡くなった時は、事前にその筋に入っていたとかで、葬式がスムーズに進んだ。先の事、
+縁起が悪いわいと避けていないで、検討しとくかな。これもそれも将来への投資だもんなあ。</p>
+<p>法事が有った。参列者の中に現役の消防士がいた。消防士と言うと、9.11テロの時の消防士の
+手記を読んだ事があるけど、命がけ体力勝負の世界みたいに思ってた。</p>
+<p>くだんの消防士は若干太りぎみ、若いのに中性脂肪が高いとか注意されてるとか。彼の先輩は
+高血圧症らしい。体力を維持するということで、一番若い隊員に合わせた食事が提供されてるとか。
+団結が命らしいので、同じ釜の飯を(残さず)食べるものだから、必然的にカロリー過多に
+なるらしい。</p>
+<p>で、高血圧の人は、ごぼう茶が血圧低下に効果的って事で、毎日飲んでいるらしい。
+ごぼうをささがけ切りし、２－３日天日で乾燥。それをプライパンで炒って作るらしい。おいらも
+試してみようかな。</p>
+<p>３月は連続で乾燥注意報が発令され、山火事が相次いで大変だったとか。消防車が入れない
+ような所だと、ふもとからホースを永遠とつないで行くらしい。
+一本のホースは直径6センチ、20メートル。それを50本とか連結する事もあるらしい。乾燥したホース
+だと、4キログラム。何本もかついで山を登るって、真さに体力勝負の世界だな。水が入ったホース
+だと、70キログラムにもなるとか。</p>
+<p>小さい火災だと、ホースを連結するより、水が入ったポンプをかついで現場に行く事も多いとか。
+タンクは20キログラムの水が入るらしいぞ。恐ろしい体力の世界だこと。</p>
+<p>ホースは超高圧の水を巻くわけだから、作用反作用の法則に負けないようにしないと、ホースが踊り出す
+らしい。尤も、この圧力を利用して、火災の為に強度が低下している屋根とか壁を壊す事も
+あるそうだ。江戸時代の火消しは、延焼を防ぐため、取り壊しも消火のうちって事らしかった
+ので、それが現代消火にも受け継がれているのかな。</p>
+<p>居合わせた坊さんとも話しをしたぞ。本堂にコウモリが住み着いているとか。コウモリは蚊を
+さかんに食べてくれる(500匹/日も食べるらしい)ので、ありがたいんだけど、糞を撒き散らすのには
+はなはだ困ってたとか。絶滅種のレッドブックにも載ってるそうなんで、無闇に追い払うのも
+憚られる。</p>
+<p>そこで、住職は、本堂の掃除にルンパを導入したそうな。堂が広いので１台では足りず、４台で
+並列ガーベッジコレクションさせているそうな。なかなかハイテクだ事。</p>
+<p>冒頭の勧誘話、キリスト系も多いな、そしてキャンバスでは、こんなのも。
+<a href="http://twitpic.com/carpx2">勧誘注意</a></p>
+<h1>python 2to3</h1>
+<p>Manjaroなんて言う新しい器を作ったので、ちょいと新しい事をしたい。以前Little smalltalkの
+説明書を見てた時、pythonのあの人が出てた。最近はPython2からPython3への布教活動で忙しいらしい。</p>
+<p>Manjaroにもpython2って名前のやつとただのpythonって名前(python3)のやつが入っている。いわゆるダブル・スタンダード状態。
+親分が幾ら笛を吹いたって、下っ端(のモジュールとかアプリ)が尽いてこないとダメだからなあ。</p>
+<p>おいらもpythonで書いた唯一のアプリを3対応にして協力してあげようと昔から狙ってたんだけど、
+使ってるモジュールが対応してないんで諦めてたんだ。でも、最近対応したみたい。</p>
+<pre>
+[sakae@manjaro ~]$ cd /var/lib/pacman/local/
+[sakae@manjaro local]$ ls -d python-*
+python-3.3.0-3/              python-matplotlib-1.2.0-8/
+python-cairo-1.10.0-2/       python-numpy-1.7.0-2/
+python-dateutil-2.1-6/       python-pyparsing-2.0.0-1/
+python-dbus-1.1.1-2/         python-pytz-2012j-1/
+python-dbus-common-1.1.1-2/  python-scipy-0.11.0-4/
+python-distribute-0.6.34-1/  python-sip-4.14.4-1/
+python-gobject-3.4.2-1/      python-six-1.2.0-2/
+</pre>
+<p>肝は、python-scipyとpython-matplotlibかな。やっとですよ。
+早速、(無謀にも)実行してみよう。ああ、実行じゃなくてもぐら叩きゲームね。まずエラーの
+洗礼を受けたのは、こういうやつ。</p>
+<pre>
+[sakae@manjaro py]$ python blood.py
+  File &quot;blood.py&quot;, line 24
+    print 'Saved {0} datas!!'.format(len(dat))
+                            ^
+SyntaxError: invalid syntax
+</pre>
+<p>printは文から式に変わるという大変貌を遂げているんだよ。地道に括弧でくくってあげたら、
+エラーは出なくなった。でも、実行するとすぐに終了しちゃう。なんで？
+天下の<a href="http://www.ibm.com/developerworks/jp/views/linux/libraryview.jsp?sort_by=Date&show_abstract=true&show_all=false&search_flag=&topic_by=%E6%8A%80%E8%A1%93%E6%96%87%E6%9B%B8%E4%B8%80%E8%A6%A7&type_by=%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E7%A8%AE%E9%A1%9E&search_by=Python+3%3A&%E9%80%B2%E3%82%80.x=0&%E9%80%B2%E3%82%80.y=0">IBMさんもPython3には注目</a>
+してんのね。</p>
+<p>自前のrepl内で、いわゆるreadに、</p>
+<pre>
+            al = raw_input(mm + '&gt; ').strip()
+</pre>
+<p>を使ってた。けど、Python3では、ただのinputにしなきゃいけないみたい。これをクリアしたら、
+プロンプトは出てくるようになった。早速グラフ表示コマンドを入力してみる。すると、今度は、
+何も表示せずにプロンプトに戻ってしまう。ここからは、debuggerでも使って、追いかけていく鹿。</p>
+<pre>
+[sakae@manjaro py]$ python -m pdb blood.py
+&gt; /home/sakae/py/blood.py(5)&lt;module&gt;()
+-&gt; yy = '13'  # for logging file name and csv date padding 20yy
+(Pdb) b main
+Breakpoint 1 at /home/sakae/py/blood.py:187
+(Pdb) c
+&gt; /home/sakae/py/blood.py(189)main()
+-&gt; cmds = {
+</pre>
+<p>地道に追って行ったら、Haskのキーをsortしてる所で失敗してる事が判明。先人の調査によれば、
+Hashの戻り値がオブジェクトに変更になってしまった為、直接のsortは出来ないとか。
+一度listに変換してからsortすればいいよらしい。こんな具合に修正した。</p>
+<pre>
+-    a = dat.keys()
++    a = list(dat.keys())
+     a.sort()
+</pre>
+<p>これで、無事に動くようになったとさ。rubyで1.9から2.0になった時の痛みはみなさん無いのかな？
+おいらの所のFreeBSDでは、rubyで書かれたportupgradeってコマンドが扱っている、巨大Hashを
+操作する時、アボートしちゃうなあ。そのうちに修正されるかな。</p>
+<p>おっといつの間にか<a href="http://www.python.jp/">日本のPythonサイト</a>もリニューアルされてたぞ。</p>
+<p>後で知った事なんだけど、<a href="http://diveintopython3-ja.rdy.jp/porting-code-to-python-3-with-2to3.html">2to3を使ってコードをPython 3に移植する</a>
+なんていう変換器があるのね。ご丁寧な事に、python2にもpython3にも付属してる。みんな、
+早くPython3へ行ってくれって切なる思いが込められているな。なんたって、バージョン違いの
+やつをメンテするの、人類の知恵の無駄使いですから。。。</p>
+<p>で、実力の程はと思って試してみると、ものの１秒で変換終了。私が苦労して辿った所が
+余す所なく修正されてましたよ。便利だから使ってみれ。</p>
+<h1>factor on Linux</h1>
+<p>以前ちょいとやった、OpenBSD上のfactor、苦労しなくてもLinuxのバイナリーが
+提供されてる。で、<a href="http://builds.factorcode.org/release?os=linux&cpu=x86.32">安心して取りに行って</a>みると、
+なんの事はない、ウブでしか動かないよーって書いてある。しかも石は高級な
+機能がサポートされていないとだめみたい。アスロンなんて顔洗って出直してこいって
+風。幸いおいらの石は天下のインテル様だ。</p>
+<p>ウブにそのまま入れるのも癪に障るので、gitで取ってきたやつにしよう。手順書を
+斜め読みして、ビルド用のツールが用意されてる事を知った。</p>
+<pre>
+sakae@ubuntu:~/factor$ build-support/factor.sh
+usage: build-support/factor.sh command [optional-target]
+  install - git clone, compile, bootstrap
+  deps-linux - install required packages for Factor on Linux using apt-get
+  deps-macosx - install git on MacOSX using port
+  self-update - git pull, make local boot image, bootstrap
+  quick-update - git pull, refresh-all, save
+  update - git pull, download a boot image, recompile, bootstrap
+  bootstrap - bootstrap with an existing boot image
+  net-bootstrap - download a boot image, bootstrap
+  make-target - find and print the os-arch-cpu string
+  report - print the build variables
+</pre>
+<p>ウブはウブでも、まずはコンパイル出来る環境を作れとな。それからネットブート
+するんだぞって風に解釈したよ。</p>
+<pre>
+sakae@ubuntu:~/factor$ build-support/factor.sh deps-linux
+sakae@ubuntu:~/factor$ build-support/factor.sh net-bootstrap
+</pre>
+<p>その通りにしたら、無問題で動いちゃったよ。さすがウブなユーザー向け、身内には
+やさしいのね。（これ、褒め言葉ですんで、誤解無き様）</p>
+<p>気をよくしたおいらは、ArchLinuxにもfacotorを入れてあげたいなと思った訳だ。だってウブで
+しか動かないなんてつまんないでしょ。Linux用のdepは動かないので、ソースを見てアタリをつける。</p>
+<pre>
+install_deps_linux() {
+    sudo apt-get --yes install libc6-dev libpango1.0-dev libx11-dev xorg-dev lib
+gtk2.0-dev gtk2-engines-pixbuf libgtkglext1-dev wget git git-doc rlwrap gcc make
+
+    check_ret sudo
+}
+</pre>
+<p>大体入っていそうなので、コンパイルしたよ。無事にfactorとイメージが出来上がったけどXの上では
+動かんかった。lddで取り込んでるライブラリーを確認したら、火狐もびっくりの75個も使ってた。
+対するArchの方は、たったの９個だけだった。X関係が大幅に欠落してる。ウブのそれと比べて
+必要そうなライブラリーを入れてあげた。って、言っても、ライブラリー名からパッケージ名は
+分からんので、pkgfileなんていう検索用パッケージを使ってあげたよ。こやつ、検索用データは
+pkgfile -uであらかじめ取り込んでおかないといけないけど。</p>
+<pre>
+[sakae@arch ~]$ pkgfile -s libgdkglext-x11-1.0.so.0
+extra/gtkglext
+[sakae@arch ~]$ pkgfile -s libpangox-1.0.so.0
+extra/pangox-compat
+</pre>
+<p>こんな風にして、いろいろとX関係を入れていったら、X上でも動くようになったよ。やれやれ。</p>
+<pre>
+[sakae@manjaro ~]$ sudo pkgfile -u
+:: Updating 5 repos...
+warning: download failed: http://spiralinear.org/manjaro/repo/basis/i686/basis.files [HTTP 404]error: failed to update repo: basis
+warning: download failed: http://spiralinear.org/manjaro/repo/addon/i686/addon.files [HTTP 404]error: failed to update repo: addon
+warning: download failed: http://spiralinear.org/manjaro/repo/extra/i686/extra.files [HTTP 404]error: failed to update repo: extra
+warning: download failed: http://spiralinear.org/manjaro/repo/community/i686/community.files [HTTP 404]error: failed to update repo: community
+warning: download failed: http://spiralinear.org/manjaro/repo/platform/i686/platform.files [HTTP 404]error: failed to update repo: platform
+</pre>
+<p>分家のmanjaroの方は、残念ながら気配りが足りず、pkgfile用の元ねたが提供されてなかった。
+これ、今後のために通報しといた方が良いんだろうか？</p>
+<h1>CiSE</h1>
+<p>以前、gaucheのエンジンをCから使うって記事を又引きした。今度は、SchemeのS式を
+C言語に翻訳する記事が出てたので、又引きしてみる。</p>
+<p>CiSE(C In S-Expression)と言うそうな。一部、マニュアルにも書かれていないのを
+平気で使っているので、そこん所は暗黙の了承があるものとします。</p>
+<p>変換器はモジュールになっているんで、そのドライバーを定義します。（あっ、偉そうに
+書いているけど、引用です）</p>
+<pre>
+[sakae@secd ~/t]$ cat toC.scm
+(use gauche.cgen)
+(use gauche.cgen.cise)
+(use gauche.parseopt)
+
+(define (main args)
+  (let-args (cdr args)
+    ((infile &quot;i=s&quot; #f)
+     (outfile &quot;o=s&quot; #f))
+
+    (unless (and infile outfile)
+      (display #`&quot;usage: gosh ,(car args) -i 'input-file' -o 'output-file'\n&quot;)
+      (exit -1))
+
+    (call-with-input-file infile
+       (^ (in)
+          (call-with-output-file outfile
+             (^ (out)
+                (cise-translate in out)))))))
+</pre>
+<p>こちらは、有名なFizzBuzzのgauche方言です。</p>
+<pre>
+[sakae@secd ~/t]$ cat FizzBuzz.scm
+(.include &lt;stdio.h&gt;)
+
+(define-cfn main (argc::int argv::char**) ::int
+  (dotimes (i 30)
+    (case (% (+ i 1) 15)
+      ((0) (printf &quot;FizzBuzz\n&quot;))
+      ((3 6 9 12) (printf &quot;Fizz\n&quot;))
+      ((5 10) (printf &quot;Buzz\n&quot;))
+      (else (printf &quot;%d\n&quot; (+ i 1)))))
+  (return 0))
+</pre>
+<p>これを下記のように利用します。</p>
+<pre>
+[sakae@secd ~/t]$ gosh toC.scm -i FizzBuzz.scm -o test.c
+[sakae@secd ~/t]$ gcc test.c
+[sakae@secd ~/t]$ ./a.out
+1
+2
+Fizz
+4
+:
+29
+FizzBuzz
+</pre>
+<p>とまあ、普通はこれで万歳なんだけど、うたぐり深いおいらは
+どんな風にCのソースへ変換されたから、test.cを眺めてみましたよ。そしたら、#line何がし
+ってのが大量に含まれていた。これdebug用なんですかね。ちょっと観賞に耐えないので、
+えいやって整形してみた。（注: #include文が削られています）</p>
+<pre>
+[sakae@secd ~/t]$ fgrep -v '#' test.c | indent
+
+int
+main(int argc, char **argv)
+{{
+                {
+                        int             i = 0;
+                        int             cise__702 = 30;
+                        for (; (i) &lt; (cise__702); (i)++) {
+                                switch (((i) + (1)) % (15)) {
+                                case 0:{
+                                                printf(&quot;FizzBuzz\n&quot;);
+                                                break;
+                                        }
+                                case 3:
+                                case 6:
+                                case 9:
+                                case 12:{
+                                                printf(&quot;Fizz\n&quot;);
+                                                break;
+                                        }
+                                case 5:
+                                case 10:{
+                                                printf(&quot;Buzz\n&quot;);
+                                                break;
+                                } default:{
+                                                printf(&quot;%d\n&quot;, (i) + (1));
+                                                break;
+                                        }
+                                }
+                        }
+                }
+                return (0);
+}
+}
+</pre>
+<p>上記のドライバーを含めてshellファイルに隠してしまえば、いきなりSchemeファイル
+から、アプリが出来上がるぞ。名前は、goshcってのが良いかな。</p>
+<h1>cgen.ciseの中身</h1>
+<p>上記で出てきた、toC.scmの心臓部、cge.ciseは何処にある？ ソースを見たいぞ。
+見ておくと３文の得以上の価値があるに違いない。</p>
+<p>えっと、ソースの在り処はFreeBSDの場合、</p>
+<pre>
+[sakae@secd /usr/local/share/gauche-0.9/0.9.3.3/lib/gauche/cgen]$ ls
+cise.scm        precomp.scm     tmodule.scm     unit.scm
+literal.scm     stub.scm        type.scm
+</pre>
+<p>これのcise.scmがユーザーとお付き合いするためのフロントエンドになるのかな。
+それ以外は、githubに集う人達のものでしょう。早速見ていきます。</p>
+<pre>
+;; If true, include #line directive in the output.
+(define cise-emit-source-line (make-parameter #t))
+</pre>
+<p>ふむ、これdebug用の何処を翻訳したかってのを出す/出さないのスイッチだな。デフォでは、
+出すようになってるとな。</p>
+<pre>
+;;
+;; cise-translate inp outp &amp;key enviroment
+;;
+;;   External interface to translate entire CiSE file into C.
+;;   CiSE expressions are read from INP and the resulting C code
+;;   is written to OUTP.
+;;
+;;   If CISE-TRANSLATE encounters a form (.static-decls),
+;;   it expands the rest of CiSE forms into a temporary string,
+;;   then emits the forward declarations of static functions
+;;   into outp, followed by the accumulated C code.  With this
+;;   you don't need to write forward declarations in CiSE source.
+
+(define (cise-translate inp outp
+                        :key (environment (make-module #f))
+                             (context (cise-context-copy (cise-context))))
+      :
+</pre>
+<p>こちらが、ご本尊様におわします。そしてその功徳は、</p>
+<pre>
+;;=============================================================
+;; Built-in macros
+;;
+
+;;------------------------------------------------------------
+;; C function definition
+;;
+(define-cise-macro (define-cfn form env)
+  (define (argchk args)
+    (match (canonicalize-vardecl args)
+      [() '()]
+      [((var ':: type) . rest) `((,var . ,type) ,@(argchk rest))]
+      [(var . rest) `((,var . ScmObj) ,@(argchk rest))]))
+   :
+</pre>
+<p>こういう形で現れてきます。ああ、ありがたや、ありがたや。</p>
+
+</div>
+</body>
+</html>
+<!-- text below generated by geocities.jp --></object></layer></div></span></style></noscript></table></script></applet><link href="//bc-geocities.yahoo.co.jp/js/sq.css" rel="stylesheet" type="text/css"><script language="javascript">var jps=382116062;var jpt=1533746965</script><script language="javascript" src="//bc-geocities.yahoo.co.jp/js/sq.js"></script><script language="javascript" src="//bc-geocities.yahoo.co.jp/js/geov2.js"></script><script language="javascript">geovisit();</script>

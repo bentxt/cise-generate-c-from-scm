@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1561.6">
+  <style type="text/css">
+    p.p2 {margin: 0.0px 16.0px 12.0px 16.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Courier; color: #000000; -webkit-text-stroke: #000000}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Courier; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+    span.s2 {font-kerning: none; background-color: #e6ecf9}
+  </style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; line-height: 28.0px; font: 24.0px Helvetica; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>CiSE</b></span></h1>
+<p class="p2"><span class="s1">Previously, I pulled the article again to use gauche's engine from C. Next time, there was an article translating the Scheme S expression into the C language, so I will try again.</span></p>
+<p class="p2"><span class="s1">It is said to be CiSE (C In S - Expression). Since it is easy to use that part is not written also in the manual, there are tacit acknowledgment everywhere.</span></p>
+<p class="p2"><span class="s1">The converter is a module, so define the driver. (Ah, I write it so, but it is a quote.)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ cat toC.scm</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(use gauche.cgen)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(use gauche.cgen.cise)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(use gauche.parseopt)</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(define (main args)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">   </span>(let-args (cdr args)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span>((infile "i = s" #f)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>(outfile "o = s" # f))</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span>(unless (and infile outfile)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>(display # `" usage: gosh, (car args) - i 'input - file' - o 'output - file' \ n ")</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>(exit -1))</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span>(call-with-input-file infile</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>(^ (in)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">           </span>(call-with-output-file outfile</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">              </span>(^ (out)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                 </span>(cise-translate in out)))))))</span></p>
+<p class="p2"><span class="s1">This is the famous FizzBuzz 's gauche dialect.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ cat FizzBuzz.scm</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(.include &lt;stdio.h&gt;)</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(define-cfn main (argc :: int argv :: char **) :: int</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">   </span>(dotimes (i 30)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span>(case (% (+ i 1) 15)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>((0) (printf "FizzBuzz \ n")))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>((369 12) (printf "Fizz \ n")))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>((5 10) (printf "Buzz \ n")))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>(else (printf "% d \ n" (+ i 1))))))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">   </span>(return 0))</span></p>
+<p class="p2"><span class="s1">We will use this as below.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ gosh toC.scm - i FizzBuzz.scm - o test.c</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ gcc test.c</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ ./a.out</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>1</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>2</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>Fizz</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>Four</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>:</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>29</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>FizzBuzz</span></p>
+<p class="p2"><span class="s1">Well, normally, this is a million years old, but I was looking at test.c because I was deeply sorry I was converted to C source. Then a lot of # line what was done was included. Is it for debug? Because I can not stand a little watching, I tried to shape it. (Note: #include statements have been deleted)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd ~ / t] $ fgrep -v '#' test.c | indent</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>int</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>main (int argc, char ** argv)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>{{</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                 </span>{</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                         </span>int i = 0;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                         </span>int cise__ 702 = 30;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                         </span>for (; (i) &lt;(cise__ 702); (i) ++) {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>switch (((i) + (1))% (15)) {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 0: {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>printf ("FizzBuzz \ n");</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>break;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                         </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 3:</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 6:</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 9:</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 12: {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>printf ("Fizz \ n");</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>break;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                         </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 5:</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>case 10: {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>printf ("Buzz \ n");</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>break;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>} default: {</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>printf ("% d \ n", (i) + (1));</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                                 </span>break;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                         </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                                 </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                         </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                 </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                 </span>return (0);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>}</span></p>
+<p class="p2"><span class="s1">If you hide it in the shell file including the above driver, the application will be completed from the Scheme file suddenly. I wonder if the name is goshc.</span></p>
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; line-height: 28.0px; font: 24.0px Helvetica; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Inside of cgen.cise</b></span></h1>
+<p class="p2"><span class="s1">In the above, where is the heart of toC.scm, cge.cise? I'd like to see the source. It must be worth more than getting three sentences to watch.</span></p>
+<p class="p2"><span class="s1">Well, the source of the source is FreeBSD,</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>[sakae @ secd /usr/local/share/gauche-0.9/0.9.3.3/lib/gauche/cgen]$ ls</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>cise.scm precomp.scm tmodule.scm unit.scm</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>literal.scm stub.scm type.scm</span></p>
+<p class="p2"><span class="s1">I wonder if cise.scm of this will be a front end to associate with users. Other than that, it belongs to people gathering on github. I will look forward.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; If true, include # line directive in the output.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(define cise-emit-source-line (make-parameter # t))</span></p>
+<p class="p2"><span class="s1">Hmm, this is the switch that will issue / not show out what you translated for debug. By default, it is supposed to come out.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; cise-translate inp outp &amp; key enviroment</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; External interface to translate entire CiSE file into C.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; CiSE expressions are read from INP and the resulting C code</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; is written to OUTP.</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; If CISE-TRANSLATE encounters a form (.static-decls),</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; it expands the rest of CiSE into into temporary string,</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; then emits the forward declarations of static functions</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; into outp, followed by the accumulated C code. With this</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; you do not need to write forward declarations in CiSE source.</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(define (cise-translate inp outp</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                         </span>: key (environment (make-module # f))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                              </span>(context (cise-context-copy (cise-context)))))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>:</span></p>
+<p class="p2"><span class="s1">Here, I will celebrate your honorable guest. And its merit,</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; ========================================================= =============</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; Built-in macros</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;;</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; ------------------------------------------------ --------------</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;; C function definition</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space"> </span>(define-cise-macro (define-cfn form env)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">   </span>(define (argchk args)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span>(match (canonicalize-vardecl args)</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>[() '()]</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>[((var ':: type). rest) `((, var., type), @ (argchk rest))]</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">       </span>[(var. rest) `((, var. ScmObj), @ (argchk rest))]))</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>:</span></p>
+<p class="p2"><span class="s1">It appears in this way. </span><span class="s2">Oh, thankfully, thankful</span></p>
+</body>
+</html>

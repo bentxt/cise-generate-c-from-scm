@@ -1,0 +1,934 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="ja">
+<!-- InstanceBegin template="/Templates/fnews01_fcoding.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" --><title>“本物のマクロ”でCのコード行数を半分に！ － ＠IT</title><!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html;charset=shift_jis">
+<meta http-equiv="content-script-type" content="text/javascript">
+<meta http-equiv="content-style-type" content="text/css">
+
+<!-------------------------------------------------------------------------------------------------->
+<!-- fcoding -->
+<!-------------------------------------------------------------------------------------------------->
+<link rel="stylesheet" href="/parts/stylesheet/news/atit_newsart.css" type="text/css" media="all">
+<link rel="stylesheet" href="/stylesheet/articles.css" type="text/css" media="all">
+<script type="text/javascript" src="/parts/javascript/common/common.js"></script>
+<script type="text/javascript" src="/parts/javascript/common/jquery.js"></script>
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/parts/javascript/adRequest_ait.js"></script>
+
+
+</head>
+<body id="fcoding">
+<div class="outBox">
+<a name="articletop"></a>
+<!-- wrap -->
+<div id="wrap">
+<script type="text/javascript" src="/parts/javascript/adRequest_ait.js"></script>
+<div id="gnavi">
+<div id="gnaviOuter">
+<div id="gnaviInner">
+<div class="gnaviBtn gnaviBtn1"><a href="http://www.atmarkit.co.jp/">TOP</a></div>
+<div class="gnaviBtn gnaviBtn10"><a href="http://www.atmarkit.co.jp/ait/series/search/">連載一覧</a></div>
+<div class="gnaviBtn gnaviBtn2"><a href="http://www.atmarkit.co.jp/ait/subtop/features/special/">＠IT Special</a></div>
+<div class="gnaviBtn gnaviBtn3"><a href="http://www.atmarkit.co.jp/ait/subtop/features/seminar/index.html">セミナー</a></div>
+<div class="gnaviBtn gnaviBtn4"><a href="http://www.atmarkit.co.jp/ait/kw/atmarkit_ebook.html">eBook</a></div>
+<div class="gnaviBtn gnaviBtn5"><a href="http://qa.atmarkit.co.jp/">QA</a></div>
+<div class="gnaviBtn gnaviBtn6"><a href="http://jibun.atmarkit.co.jp/scenter/ittrain/">トレメ</a></div>
+<div class="gnaviBtn gnaviBtn7"><a href="http://el.jibun.atmarkit.co.jp/">ブログ</a></div>
+<div class="gnaviBtn gnaviBtn8"><a href="http://job.atmarkit.co.jp/">転職</a></div>
+<div class="gnaviBtn gnaviBtn11"><a href="https://hyouban.atmarkit.co.jp/">企業口コミ</a></div>
+<div class="gnaviBtn gnaviBtn9"><a href="http://www.atmarkit.co.jp/job/jt/aud/index.php">派遣</a></div>
+<div class="mnaviSearch"><div id="search" class="searcht">
+
+<div id="cse-search-form" style="width: 100%;">Loading</div>
+<script src="//www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript"> 
+  google.load('search', '1', {language : 'ja', style : google.loader.themes.V2_DEFAULT});
+  google.setOnLoadCallback(function() {
+    var customSearchOptions = {};
+    var orderByOptions = {};
+    orderByOptions['keys'] = [{label: '日付', key: 'date'},{label: '関連性', key: ''}];
+    customSearchOptions['enableOrderBy'] = true;
+    customSearchOptions['orderByOptions'] = orderByOptions;
+    var imageSearchOptions = {};
+    imageSearchOptions['layout'] = google.search.ImageSearch.LAYOUT_POPUP;
+    customSearchOptions['enableImageSearch'] = true;
+    customSearchOptions['imageSearchOptions'] = imageSearchOptions;
+    customSearchOptions['adoptions'] = {'layout': 'noTop'};
+    var customSearchControl = new google.search.CustomSearchControl(
+      '000492183644671384608:zpcmlmr1swi', customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    var options = new google.search.DrawOptions();
+    options.setAutoComplete(true);
+    options.enableSearchboxOnly("http://www.google.com/cse?cx=000492183644671384608:zpcmlmr1swi");
+    customSearchControl.draw('cse-search-form', options);
+  }, true);
+</script>
+
+<style type="text/css">
+  input.gsc-input, .gsc-input-box, .gsc-input-box-hover, .gsc-input-box-focus {
+    border-color: #D9D9D9;
+  }
+  input.gsc-search-button, input.gsc-search-button:hover, input.gsc-search-button:focus {
+    border-color: #2F5BB7;
+    background-color: #357AE8;
+    background-image: none;
+    filter: none;
+    margin:0;
+  }
+</style>
+
+
+</div></div>
+</div>
+</div>
+</div>
+<div id="header" class="gnavi-box">
+<div id="headerOuter">
+<div id="header_l"><a href="/index.html"><img src="/include/header/images/95_logo_header.gif" alt="アットマーク・アイティ　ITエキスパートのための問題解決メディア"></a></div>
+<div id="header_r">
+
+<div id="localNav"><div class="localNavOut"><div class="localNavIn">
+<div id="localNavMain"><div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/win/" title="Windows Server" onClick="designCnt('lnavMain',this.href);">Windows Server</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/dotnet/" title=".NET" onClick="designCnt('lnavMain',this.href);">.NET</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/server/" title="Server & Storage" onClick="designCnt('lnavMain',this.href);">Server & Storage</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/ux/" title="HTML5 + UX" onClick="designCnt('lnavMain',this.href);">HTML5 + UX</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/smart/" title="Smart & Social" onClick="designCnt('lnavMain',this.href);">Smart & Social</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/coding/" title="Coding Edge" onClick="designCnt('lnavMain',this.href);">Coding Edge</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/java/" title="Java" onClick="designCnt('lnavMain',this.href);">Java</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/db/" title="Database" onClick="designCnt('lnavMain',this.href);">Database</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/linux/" title="Linux ＆ OSS" onClick="designCnt('lnavMain',this.href);">Linux ＆ OSS</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/network/" title="Network" onClick="designCnt('lnavMain',this.href);">Network</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/security/" title="Security" onClick="designCnt('lnavMain',this.href);">Security</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/systemdesign/" title="System Design" onClick="designCnt('lnavMain',this.href);">System Design</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/testtools/" title="Test & Tools" onClick="designCnt('lnavMain',this.href);">Test & Tools</a></div>
+<div class="localNavBtn localNavBtnMainLast"><a href="http://www.atmarkit.co.jp/ait/subtop/jibun/" title="自分戦略研究所" onClick="designCnt('lnavMain',this.href);">自分戦略研究所</a></div>
+</div>
+<div id="localNavSub"><div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/features/security/secrepo.html" title="セキュリティリポート裏話" onClick="designCnt('navSub',this.href);"><span class="raquo">&raquo;</span> セキュリティリポート裏話</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/features/kwd/auto.html" title="SRE" onClick="designCnt('navSub',this.href);"><span class="raquo">&raquo;</span> SRE</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/features/systemdesign/engineer.html" title="DX時代のエンジニア" onClick="designCnt('navSub',this.href);"><span class="raquo">&raquo;</span> DX時代のエンジニア</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/features/jibun/uistyle.html" title="U＆Iターン" onClick="designCnt('navSub',this.href);"><span class="raquo">&raquo;</span> U＆Iターン</a></div>
+<div class="localNavBtn"><a href="http://www.atmarkit.co.jp/ait/subtop/features/theme/index.html" title="その他の特集" onClick="designCnt('navSub',this.href);"><span class="raquo">&raquo;</span> その他の特集</a></div>
+</div>
+</div></div></div>
+<script type="text/javascript">
+</script>
+
+</div>
+<div id="header_ad">
+
+<!-------------------------------------------------------------------------------------------------->
+<!-- fcoding -->
+<!-------------------------------------------------------------------------------------------------->
+<!-- ad_start_new -->
+<script language="JavaScript" type="text/javascript">
+   <!--
+   var pid="2075500101";
+   var locs="ITN";
+   var random=new Date();
+
+   var js_url='http://dlv.itmedia.jp/adsv/v1?posall='+locs+'&id='+pid+'&t=js&rnd='+random.getTime();
+   document.write('<sc'+'ript language="JavaScript" type="text/javascript" src="'+js_url+'">');
+   document.write('</sc'+'ript>');
+   //-->
+</script>
+<noscript>
+ <iframe height=90 width=728 marginwidth=0 marginheight=0 hspace=0
+   vspace=0 frameborder=0 scrolling=no src="http://dlv.itmedia.jp/adsv/v1?posall=ITN&id=2075500101">
+ </iframe>
+</noscript>
+<!-- ad_end_new -->
+
+
+
+
+</div>
+</div>
+</div>
+<div id="navibar">
+<div class="navibar_styl"><a href="http://www.atmarkit.co.jp/">＠IT</a> &gt; 
+<a href="/fcoding/">Coding Edge </a> &gt;
+
+
+<!-- InstanceBeginEditable name="navititle" -->“本物のマクロ”でCのコード行数を半分に！<!-- InstanceEndEditable --></div>
+</div>
+<!-- main -->
+<div id="main">
+<!-- centercol -->
+<div id="centercol">
+<div id="headmenu-area">
+<!-- eventtext-area -->
+<!-- DMP Body -->
+<div class="colBoxClear"></div>
+<div class="dmp-area">
+<div id="insertAdSpaceBeforeThis_0000000161e4c1f6" style="display:none"></div>
+<script type="text/javascript"> (function() { try { var scriptEl = document.createElement('script'); scriptEl.type = 'text/javascript'; scriptEl.async = 'async'; scriptEl.src = ('https:' == document.location.protocol) ? 'https://scdn.cxense.com/cx.js' : 'http://cdn.cxense.com/cx.js'; var targetEl = document.getElementsByTagName('script')[0]; targetEl.parentNode.insertBefore(scriptEl, targetEl); } catch (e) {}; })(); </script> <script type="text/javascript"> var cX = cX || {}; cX.callQueue = cX.callQueue || []; cX.callQueue.push(['insertAdSpace', { adSpaceId:'0000000161e4c1f6', width:500, height:60, initialHorizontalAdUnits:1, initialVerticalAdUnits:1, resizeToContentSize: true, renderTemplateUrl: 'http://www.atmarkit.co.jp/ait/files/20150815/rendertemplate.html' } ]); </script>
+</div>
+<br style="clear: both;">
+<!-- /DMP Body -->
+<!-- /eventtext-area -->
+
+<!-- socialbtn-area -->
+<div id="socialbtn-area">
+<!-- twitter -->
+<div class="socialbtn twitter">
+<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-lang="ja">Tweet</a>
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js" charset="UTF-8"></script>
+</div>
+<!-- hatebu -->
+<div class="socialbtn hatebu">
+<a href="http://b.hatena.ne.jp/entry/http://www.atmarkit.co.jp/news/200909/07/lltv02.html" class="hatena-bookmark-button" data-hatena-bookmark-title="＠IT" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加" data-hatena-bookmark-mode="popup"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button_wo_al.js" charset="utf-8" async="async"></script>
+</div>
+<!-- facebook like -->
+<div class="socialbtn facebooklike">
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.atmarkit.co.jp/news/200909/07/lltv02.html&amp;layout=button_count&amp;show_faces=false&amp;width=50&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:105px; height:21px;" allowTransparency="true"></iframe>
+</div>
+</div><!-- /socialbtn-area -->
+
+</div>
+<!-- /headmenu-area -->
+
+<!-- article -->
+<span id="art-logo"><a href="/news/">NewsInsight</a></span>
+<h2><!-- InstanceBeginEditable name="subtitle" -->【LLTVレポート】劇的ビフォーアフター、匠の技（中編）<!-- InstanceEndEditable --></h2>
+<h1><!-- InstanceBeginEditable name="title" -->“本物のマクロ”でCのコード行数を半分に！<!-- InstanceEndEditable --></h1>
+<p id="date"><!-- InstanceBeginEditable name="date" -->2009/09/07<!-- InstanceEndEditable --></p>
+<!-- InstanceBeginEditable name="logo" --><!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="contents" --><p>　毎年夏に開催される軽量プログラミング言語（LL：Lightweight Language）をテーマにした「LLイベント」。第7回目となる「LLTV」が、2009年8月29日に東京・中野で開催された。この記事ではプログラムの一部、「大改善!!劇的ビフォーアフター」をレポートする。<A HREF="http://www.atmarkit.co.jp/news/200909/07/lltv01.html">前編</A>では、Rubyによるfortuneコマンドの“増築”と、Firefox拡張によるslコマンドの実装というネタ系発表をレポートした。中編となる本記事では、C言語にLisp風のマクロを取り入れ、lsコマンドのソースコードを約半分に“修繕”する匠の技をレポートする。<A HREF="http://www.atmarkit.co.jp/news/200909/07/lltv03.html">後編</A>では、売り場業務が滞りがちだった販売管理システムをbashコマンドで“建て直した”という劇的ビフォーアフターの発表をレポートする。</p>
+<h3>Cで書かれたlsのソースコードの問題点</h3>
+<!--CAP-->
+<div id="col200l"><img src="kawai.jpg" width="200" height="256" alt="kawai.jpg">
+<span class="s b">匠の川合史朗氏</span></div>
+<!--CAPEND-->
+<p>　「Real/Macro Metaprogramming On C」と題した発表を行ったのは、Scheme処理系「Gauche」（ゴーシュ）の開発者として知られる川合史朗氏だ。アカデミックな情報科学の議論から、アセンブラレベルの最適化に至る泥臭いハッカーの実装話までカバーするスーパーハッカーとして知られる“匠”だ。</p>
+<p>　川合氏が改修を試みたのはlsコマンド（GNUのものではなく、FreeBSD付属のもの）。ソースコードは1141行。川合氏は「非常に素直で読みやすいコードで、C言語で書かれたソースコードとしては優等」としながらも、「LLを使い慣れてスポイルされてしまったプログラマからみると、どうしても不満点が見つかる」と、冗長性やメンテナンス性の悪さを指摘した。</p>
+<p>　例えばlsコマンドでファイルリストを表示するとき、昇順／降順でソートすることができる。ソートで比較するのはファイル名だったり、タイムスタンプだったりいろいろ。このとき関数ポインタで渡される比較関数として、1つの比較対象につき昇順と降順の2種類が、ペアでcmp.cに定義されているという。これらは関数名と動作が逆である以外はまったく同じ構造で、「新しいソート順を加えたいときに、いちいち2つ書かなきゃいけない」（川合氏）というムダがある。「LLの高階関数が使えれば、関数を引数にとって、その逆の動作をする関数をオンザフライで作れるのですが、C言語では、そういうことができない。とても残念です」（同氏）。類似した構造を持つパターンをくくり出すための抽象化機能が貧弱なC言語の限界、というわけだ。</p>
+<!--CAP-->
+<div id="col480c"><img src="issue01.jpg" width="480" height="269" alt="issue01.jpg">
+<span class="s b">川合氏が示した問題点の1つ。C言語の抽象化機能が貧弱であるために、似たような関数を2つ別々に定義してある</span></div>
+<!--CAPEND-->
+<p>　同様に、非本質的な情報がコードに入り込むのも、C言語のソースコードに見られる問題点だという。forループでカウンタを使って配列にアクセスするようなコードや、連結リストをポインタで順にたぐるようなループでは、抽象度の高い言語なら、より端的に意図したとおりの記述が可能。川合氏は「こう書ければなあ」と擬似コードを示すことで、C言語の抽象機能の弱さを指摘した。</p>
+<!--CAP-->
+<div id="col480c"><img src="issue02.jpg" width="480" height="262" alt="issue02.jpg">
+<span class="s b">ループの抽象化ができないのもCの弱さ</span></div>
+<!--CAPEND-->
+<p>　川合氏が指摘した3つ目の問題点は、コード中で情報の分散が起こりやすいこと。lsでは多数あるオプションをフラグで管理している。ところが、フラグに関連したコードは、ヘッダファイル、変数を宣言している場所、main関数のオプションパーザと3個所が関係しており、「1つのオプションを付け加えるのにも、最低3個所の改変が必要」と、抽象機能の貧弱さからメンテナンス性が悪い点を指摘した。</p>
+<!--CAP-->
+<div id="col480c"><img src="issue03.jpg" width="480" height="309" alt="issue03.jpg">
+<span class="s b">オプションスイッチに関するコードが、ヘッダ、変数宣言、オプションパーザの3個所に分散してしまう</span></div>
+<!--CAPEND-->
+<h3>本物のマクロで大幅リフォーム！</h3>
+<p>　Cで書かれたlsのソースコード。そこにある「冗長性」、「非本質的な情報」、「情報の分散」という3つの問題点に対して繰り出された匠の技は、“本物のマクロ”だ。ここで川合氏がいう本物のマクロというのは、Cのプリプロセッサで処理されるテキスト置換のようなマクロではなく、Lisp風の「コンパイル前に、任意のソースコード変換ができるマクロ」だという。</p>
+<p>　「（プログラミング言語の）構文なんて飾りです、偉い人には分からないかもしれませんが、ここにいる皆さんには分かってもらえると思います」。リフォームのポイントをこう説明すると、川合氏はおもむろにC言語で書かれたコード片を次々と異なる構文に変形してみせた。関数呼び出しの例としてprint文、制御構造としてif文を、「これは、こう書いても同じことです」とカッコだらけのLispのS式に置き換えると、予想外（もしくは予想通り）の展開に会場からは笑いがわき起こった。</p>
+<p>　極め付けは、Cのmain関数のコード例だ。「例えば、こういうmain関数を、こう書くこともできます」と、ありふれたCのソースコードが、そこはかとなく原形をとどめながらも、誰も見たことがない不思議な字面のソースコードに変換されるのを見せつけられるに及んで、会場は匠の“荒技”に圧倒されて、大きな笑いに包まれた。匠は「見た目が、ちょっと変わるだけ。慣れればスラスラ読めます」と、こともなげだ。</p>
+<!--CAP-->
+<div id="col480c"><img src="cise01.jpg" width="480" height="272" alt="cise01.jpg">
+<span class="s b">川合氏が示したCの典型的なコード例</span></div>
+<!--CAPEND-->
+<!--CAP-->
+<div id="col480c"><img src="cise02.jpg" width="480" height="198" alt="cise02.jpg">
+<span class="s b">上のCのコードをCiSEと呼ぶ形式で書き直した例。S式でCを書いているという</span></div>
+<!--CAPEND-->
+<h3>魔法のようなコード変換</h3>
+<p>　S式化されたCのソースコードに会場は笑いを誘われたが、これは“壮大なネタ”などではなく、川合氏が「CiSE」（C In S-Expression）と名付けたまじめな取り組みだ。CiSEによって、CのABIやライブラリ、ハードウェアに近いセマンティクスなど好ましい特徴を変えることなく、抽象構文木を操作してコードを生成するようなマクロを使うことができる。実用性を重視したというScheme処理系のGaucheの実装でも、一部にCiSEを使っているという。</p>
+<p>　マクロの威力を示すものとして川合氏が示した最初の例は、forループでカウンタを0からインクリメントして配列要素にアクセスするパターンの抽象化。文字列の長さに応じてforループを回すような処理では、「dotimes」と名付けたマクロによって、非本質的な一時変数はコードから消失し、カウンタを0で初期化するという低レベルの処理も隠蔽できることを示した。CiSEでは、一時的に必要となるC上の変数などは自動的に通し番号で管理され、名前の衝突が起こらないよう配慮されているという。</p>
+<!--CAP-->
+<div id="col480c"><img src="loop.jpg" width="480" height="286" alt="loop.jpg">
+<span class="s b">マクロを使ってループを抽象化した例。一番上が元になるコード。真ん中がそれをマクロで展開した表現で、それをC言語に変換するといちばん下のコードが生成できる</span></div>
+<!--CAPEND-->
+<p>　このほかマクロを使うことで、繰り返しパターンの除去や、本質的な処理のくくりだしによる冗長なコードの整理、DSLのように宣言的構文で複数ファイル上の該当個所にコードを生成して、分散していた情報を1個所に集めるなどの抽象化テクニックを川合氏は次々と披露（この間、会場には劇的ビフォーアフターのBGM）。オリジナルのCの関数をすっきりと整理していくことで、全体のコード行数を約半分に縮めることに成功。ソースコードが短くなっただけではなく、同系統の機能の追加が容易になったほか、パターンの再利用性が高まるといったメリットも加わったという。</p>
+<p>　もしこうした改修を本当に行ったとして、果たしてlsコマンドをメンテナンスするCの住人たちが暮らしてゆけるのかという疑問は残るが、劇的なビフォーアフターであることは間違いない。</p>
+<!--CAP-->
+<div id="col480c"><img src="dsl.jpg" width="480" height="235" alt="dsl.jpg">
+<span class="s b">オプションスイッチ処理関連のコードは、オリジナルのCでは3個所に分散していたが、マクロを用いたDSLによって各オプションは1行の宣言で済むように</span></div>
+<!--CAPEND-->
+<!--CAP-->
+<div id="col480c"><img src="result.jpg" width="480" height="184" alt="result.jpg">
+<span class="s b">lsコマンドのソースコードを匠が書き換えた結果、約半分の行数に！</span></div>
+<!--CAPEND-->
+<h3>言語「に」使われるのではなく、言語「を」使おう</h3>
+<p>　マクロを使うことで一般にソースコードの行数は数分の1に縮むという。「ソースコードの規模が大きければ大きいほど効果が大きい」（川合氏）。</p>
+<p>　マクロの威力を示した川合氏だが、「だからといって今日うちに帰ってすぐに自分のプログラムをマクロで書き換えろという話ではない」と釘も刺す。「マクロは劇薬」（川合氏）だからだ。現在翻訳作業中の書籍「Programming Clojure」（Stuart Halloway著）の中から川合氏は、マクロに関する警句を引用する（ClojureはJVM上のLisp方言実装）。いわく、“マクロ倶楽部”には2つのルールと1つの例外があるという。</p>
+<ul>
+<li>ルール1：マクロは書くな</li>
+<li>ルール2：それがパターンをカプセル化する唯一の方法ならば、マクロを書け</li>
+<li>例外：同等の関数に比べて、呼び出し側が楽になるならば、マクロを書いても構わない</li>
+</ul>
+<p>　S式やマクロの強力さを支持するハッカーは多いが、一般のソフトウェア開発で広く使われるテクニックとは言い難い。こうした事情も含めてか、最後に川合氏は「匠のメッセージ」として次のように述べた。</p>
+<p>　「プログラマであるあなたは、コンピュータに対して万能の神です。ですから、言語の制限にぶち当たって言語に使われるのではなく、言語“を”使って、言語と戯れましょう」。</p>
+<!--CAP-->
+<div id="col480c"><img src="hack.jpg" width="480" height="339" alt="hack.jpg"></div>
+<!--CAPEND-->
+<p>　「<A HREF="http://www.atmarkit.co.jp/news/200909/07/lltv03.html">LLTVレポート 劇的ビフォーアフター、匠の技（後編）</A>」では、サイロ化して連携利用が難しかった多数の業務システムを、bashスクリプトとフラットテキスト、多段パイプ処理の組み合わせというUNIX的アプローチで劇的にリフォームしてしまったUSP研究所の當仲寛哲氏の発表をレポートする。</p>
+<div class="btmlnk">
+<h3>関連リンク</h3>
+<ul>
+<li><a href="http://ll.jus.or.jp/2009">Lightweight Language Television 2009（LLTV）</a></li>
+</ul>
+</div>
+<div class="btmlnk">
+<h3>関連記事</h3>
+<ul>
+<li><a href="http://www.atmarkit.co.jp/news/200708/07/ll2.html">Ruby2.0からオレ様言語まで、軽量言語のお祭りが開催 （＠ITNews）</a></li>
+<li><a href="http://www.atmarkit.co.jp/news/200708/07/ll3.html">「なぜ作ったのか？」、オレ様言語作った人々 （＠ITNews）</a></li>
+<li><a href="http://www.atmarkit.co.jp/news/200708/07/wada.html">日本初のハッカー、和田先生が語る「ハッカー気質」 （＠ITNews）</a></li>
+</ul>
+</div>
+<!-- InstanceEndEditable -->
+<div id="credit">
+<p id="copyright"><!-- InstanceBeginEditable name="copyright" --><!-- InstanceEndEditable --></p>
+<p id="author"><!-- InstanceBeginEditable name="author" -->（＠IT 西村賢）<!-- InstanceEndEditable --></p>
+<p id="mailto"><!-- InstanceBeginEditable name="mailto" -->情報をお寄せください：<script type="text/javascript">document.write("<a href=\""+"mailto:"+"tokuho"+"@"+"ml"+".itmedia"+".co"+".jp"+"\"> "+"tokuho"+"@"+"ml"+".itmedia"+".co"+".jp"+"</a>");</script><!-- InstanceEndEditable --></p>
+</div>
+<!-- article end -->
+<div id="cx_article_recart">
+<!-- Cxense content widget: 旧＠IT PCV 記事下オススメ記事 -->
+<div id="cx_8492cd8f17631fdd156a98737b4d034acab4b194" style="display:none"></div>
+<script type="text/javascript">
+	var cX = cX || {}; cX.callQueue = cX.callQueue || [];
+	(function(){
+		var w = window;
+		var d = document;
+		var flag_widget= false;
+		var setid = d.getElementById('cx_article_tt');
+		var setid_y = setid.offsetTop;
+		var scroll_y = 0;
+		if(w.innerHeight){
+			var browser_h = w.innerHeight;
+		}else if(dument.dumentElement && dument.dumentElement.clientHeight != 0){
+			var browser_h = d.dumentElement.clientHeight;
+		}else if(dument.body){
+			var browser_h = d.body.clientHeight;
+		}
+		var threshold_y = setid_y - browser_h;
+		var cxInsertWidget;
+
+		var evt_scroll = function(){
+			scroll_y = (function(){
+				return d.documentElement.scrollTop || d.body.scrollTop;
+			})();
+			if(scroll_y > threshold_y && !flag_widget){
+				flag_widget = true;
+				w.removeEventListener('scroll',evt_scroll,false);
+				cxInsertWidget();
+			}
+		};
+		cxInsertWidget = function(){
+			cX.callQueue.push(['insertWidget',{
+			        widgetId: '8492cd8f17631fdd156a98737b4d034acab4b194',
+			        insertBeforeElementId: 'cx_8492cd8f17631fdd156a98737b4d034acab4b194',
+			        width: 500, height: 142, renderTemplateUrl: 'auto'
+			}]);
+		};
+		evt_scroll();
+		if(!flag_widget) w.addEventListener('scroll',evt_scroll,false);
+	})();
+</script>
+<!-- End of Cxense content widget -->
+</div>
+
+<!-------------------------------------------------------------------------------------------------->
+<!-- fcoding -->
+<!-------------------------------------------------------------------------------------------------->
+<div id="ITSB"><script>adRequest({'position':'ITSB','path':'root/atmarkit/atit/coding'});</script></div>
+<!-- ISALCT -->
+<div id="ISALCT"><script>adRequest({'position':'12ISALCT','path':'root/atmarkit/atit'});</script></div>
+<!-- /ISALCT -->
+<div id="ISALC"><script>adRequest({'position':'50ISALC','path':'root/atmarkit/atit/coding'});</script></div>
+<div id="cx_article_tt">
+<!-- Cxense content widget: 旧 ＠IT 記事下 TechTarget 記事誘導 -->
+<div id="cx_bbd59be1910505e49195797be2d5296f614de164" style="display:none"></div>
+<script type="text/javascript">
+	var cX = cX || {}; cX.callQueue = cX.callQueue || [];
+	(function(){
+		var w = window;
+		var d = document;
+		var flag_widget= false;
+		var setid = d.getElementById('cx_article_tt');
+		var setid_y = setid.offsetTop;
+		var scroll_y = 0;
+		if(w.innerHeight){
+			var browser_h = w.innerHeight;
+		}else if(dument.dumentElement && dument.dumentElement.clientHeight != 0){
+			var browser_h = d.dumentElement.clientHeight;
+		}else if(dument.body){
+			var browser_h = d.body.clientHeight;
+		}
+		var threshold_y = setid_y - browser_h;
+		var cxInsertWidget;
+		var evt_scroll = function(){
+			scroll_y = (function(){
+				return d.documentElement.scrollTop || d.body.scrollTop;
+			})();
+			if(scroll_y > threshold_y && !flag_widget){
+				flag_widget = true;
+				w.removeEventListener('scroll',evt_scroll,false);
+				cxInsertWidget();
+			}
+		};
+		cxInsertWidget = function(){
+			cX.callQueue.push(['insertWidget',{
+			        widgetId: 'bbd59be1910505e49195797be2d5296f614de164',
+			        insertBeforeElementId: 'cx_bbd59be1910505e49195797be2d5296f614de164',
+			        width: 500, height: 142, renderTemplateUrl: 'auto'
+			}]);
+		};
+		evt_scroll();
+		if(!flag_widget) w.addEventListener('scroll',evt_scroll,false);
+	})();
+</script>
+<!-- End of Cxense content widget -->
+</div>
+<div class="btmlist">
+<div class="title">Coding Edge フォーラム 新着記事</div>
+<ul>
+<li><strong><a href="http://www.atmarkit.co.jp/ait/articles/1703/01/news175.html">プログラムの実行はどのようにして行われるのか、Linuxカーネルのコードから探る</a></strong> （2017/7/20）<br>　C言語の「Hello World！」プログラムで使われる、「printf()」「main()」関数の中身を、デバッガによる解析と逆アセンブル、ソースコード読解などのさまざまな側面から探る連載。最終回は、Linuxカーネルの中では、プログラムの起動時にはどのような処理が行われているのかを探る</li>
+<li><strong><a href="http://www.atmarkit.co.jp/ait/articles/1703/01/news174.html">エンジニアならC言語プログラムの終わりに呼び出されるexit()の中身分かってますよね？</a></strong> （2017/7/13）<br>　C言語の「Hello World！」プログラムで使われる、「printf()」「main()」関数の中身を、デバッガによる解析と逆アセンブル、ソースコード読解などのさまざまな側面から探る連載。今回は、プログラムの終わりに呼び出されるexit()の中身を探る</li>
+<li><strong><a href="http://www.atmarkit.co.jp/ait/articles/1707/10/news023.html">VBAにおけるFileDialog操作の基本＆ドライブの空き容量、ファイルのサイズやタイムスタンプの取得方法</a></strong> （2017/7/10）<br>　指定したドライブの空き容量、ファイルのタイムスタンプや属性を取得する方法、FileDialog／エクスプローラー操作の基本を紹介します</li>
+<li><strong><a href="http://www.atmarkit.co.jp/ait/articles/1707/05/news015.html">さらば残業！　面倒くさいエクセル業務を楽にする「Excel VBA」とは</a></strong> （2017/7/6）<br>　日頃発生する“面倒くさい業務”。簡単なプログラミングで効率化できる可能性がある。本稿では、業務で使うことが多い「Microsoft Excel」で使えるVBAを紹介する。※ショートカットキー、アクセスキーの解説あり</li>
+</ul>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" id="mailmagForm">
+ <tr> 
+   <td bgcolor="#006699"><img src="/include/footer/images/dotclear.gif" width="1" height="1"></td>
+ </tr>
+ <tr> 
+   <td bgcolor="#EEEEEE"> <table border="0" cellpadding="0" cellspacing="4">
+ <tr> 
+   <td><font size="2"><a href="/applymember/club/mail_news.html"><b>＠ITメールマガジン</b></a>　新着情報やスタッフのコラムがメールで届きます（無料）</font></td>
+ </tr>
+ <tr> 
+   <form action="/applymember/regist/terms.php" method="post">
+   <td><font size="2"> 
+   <input name="e_mail" type="text" value="メールアドレスを入力してください" size="50" onFocus="if (this.value=='メールアドレスを入力してください') {this.value='';}">
+   <input type="submit" value="申し込み">
+   </font></td>
+   </form>
+ </tr>
+</table></td>
+ </tr>
+ <tr> 
+   <td bgcolor="#006699"><img src="/include/footer/images/dotclear.gif" width="1" height="1"></td>
+  </tr>
+</table>
+<div id="btm-ttwpjob">
+<h3>キャリアアップ</h3>
+<script type="text/javascript" src="/parts/include/atit/btmtxt_job.txt"></script>
+</div>
+
+
+
+</div>
+<!-- centercol end -->
+<!-- rightcol -->
+<div id="rightcol">
+
+<!-------------------------------------------------------------------------------------------------->
+<!-- fcoding -->
+<!-------------------------------------------------------------------------------------------------->
+<div id="rightlogo"><a href="/fcoding/">Coding Edge</a></div>
+<!-- ITTI --><div id="ITTI"><script>adRequest({'position':'5ITTI','path':'root/atmarkit/atit/coding'});</script></div><!-- /ITTI --><!-- スポンサーからのお知らせ -->
+<div id="MSITTI">
+<div class="colBox colBoxMSITTI">
+<div class="colBoxOuter">
+<div class="colBoxInner">
+<div class="colBoxIndex">
+<div class="colBoxUlist">
+<ul>
+<div id="MSITTI"><script>adRequest({'position':'2MSITTI','path':'root/atmarkit/atit'});</script></div>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COMPONENT -->
+
+<div id="rrec">
+<dl>
+<dt>- PR -</dt>
+<dd><!-- ad_start_new -->
+<script language="JavaScript" type="text/javascript">
+   <!--
+   var pid="2075500101";
+   var locs="ITR";
+   var random=new Date();
+
+   var js_url='http://dlv.itmedia.jp/adsv/v1?posall='+locs+'&id='+pid+'&t=js&rnd='+random.getTime();
+   document.write('<sc'+'ript language="JavaScript" type="text/javascript" src="'+js_url+'">');
+   document.write('</sc'+'ript>');
+   //-->
+</script>
+<noscript>
+ <iframe height=300 width=300 marginwidth=0 marginheight=0 hspace=0
+   vspace=0 frameborder=0 scrolling=no src="http://dlv.itmedia.jp/adsv/v1?posall=ITR&id=2075500101">
+ </iframe>
+</noscript>
+<!-- ad_end_new -->
+</dd>
+</dl>
+</div><!-- レクタングル -->
+<!-- ISALR --><div id="ISALR"><script>adRequest({'position':'20ISALR','path':'root/atmarkit/atit/coding'});</script></div><!-- /ISALR --><!-- ＠IT Special -->
+<!-- EVENTCAL -->
+
+<!-- Event Calender -->
+<div id="calendar" class="rcBox txtTtl"><h2 style="color:#444 !important;">イベントカレンダー</h2>
+<div class="calendarOuter">
+
+<!-- calendar ad -->
+<div id="calendarInnerPR">
+<p>PickUpイベント</p><span class="prmark">- PR -</span>
+<ul>
+<!-- ad_start_new -->
+<script language="JavaScript" type="text/javascript">
+   <!--
+   var pid="784200530";
+   var locs="3ITTE";
+   var random=new Date();
+
+   var js_url='http://dlv.itmedia.jp/adsv/v1?posall='+locs+'&id='+pid+'&t=js&rnd='+random.getTime();
+   document.write('<sc'+'ript language="JavaScript" type="text/javascript" src="'+js_url+'">');
+   document.write('</sc'+'ript>');
+   //-->
+</script>
+<noscript>
+ <iframe height=120 width=290 marginwidth=0 marginheight=0 hspace=0
+   vspace=0 frameborder=0 scrolling=no src="http://dlv.itmedia.jp/adsv/v1?posall=3ITTE&id=784200530">
+ </iframe>
+</noscript>
+<!-- ad_end_new -->
+
+</ul>
+</div>
+
+<script type="text/javascript">
+    var addivid = "calendarInnerPR";
+    var adparts = document.getElementById(addivid);
+    var adinhtml = adparts.innerHTML;
+    rObj = new RegExp('st=noad');
+    if (adinhtml.match(rObj)) {
+        document.getElementById(addivid).style.display="none";
+    }
+</script>
+
+<style type="text/css"><!--
+#calendarInnerPR {
+clear:both;
+background:none transparent;
+margin:0!important;
+padding:0 0 10px !important;
+border:0 none!important;
+position:relative;
+font-size:12px;
+line-height:140%;
+}
+#calendarInnerPR p {
+font-weight:bold;
+background:url(http://img.itmedia.jp/so/p/image/i_arow.gif) no-repeat 4px 7px!important;
+padding:5px 0 0 19px;
+font-size:12px;
+letter-spacing: 0.1ex;
+line-height: 140%;
+margin:0;
+}
+#calendarInnerPR span.prmark {
+display:block;
+font-size:9px;
+font-weight:normal;
+color:#444;
+width:35px;
+margin:0;
+padding:0;
+position:absolute;
+top:3px;
+right:0;
+}
+#calendarInnerPR ul {
+border-bottom:0 solid #DDD;
+list-style:none;
+margin:0;
+padding:4px 4px 0;
+}
+#calendarInnerPR ul li {
+background:url(http://img.itmedia.jp/so/p/image/ad_evecal_ulli2.gif) no-repeat 0 1px;
+border-top:0 none;
+border-bottom: 1px dotted #DDD;
+margin-bottom: 0;
+padding: 0 0 0 23px;
+height:24px;
+width:auto;
+overflow: hidden;
+letter-spacing:0.1ex;
+}
+#calendarInnerPR ul li a {
+font-size:12px;
+letter-spacing: 0.1pt;
+padding:1px 0 0;
+text-decoration:none;
+margin:0;
+line-height:23px;
+display:block;
+}
+--></style>
+
+
+<!-- /calendar ad  -->
+
+<div id="calendarInner">
+<p>アクセスランキング</p>
+<div id="rcolCalendarIndex"></div>
+</div>
+<span class="cal-bt"><a href="http://www.atmarkit.co.jp/event/" target="_blank">もっと見る</a></span>
+</div>
+</div>
+<!-- Event Calender end -->
+
+<script type="text/javascript" src="http://event.atmarkit.co.jp/rankings/all.json"></script>
+
+<!-- イベントカレンダー -->
+<!-- /EVENTCAL -->
+<!-- START 091022 /include/rightmenu/right_menu.html  -->
+<!--  -->
+<!-- news -->
+
+<div id="logly-lift-4276960"></div>
+<script charset="UTF-8">
+  (function(){
+    var _lgy_lw = document.createElement("script");
+    _lgy_lw.type = "text/javascript";
+    _lgy_lw.charset = "UTF-8";
+    _lgy_lw.async = true;
+    _lgy_lw.src= (("https:" == document.location.protocol) ? "https://" : "http://")+"l.logly.co.jp/lift_widget.js?adspot_id=4276960";
+    var _lgy_lw_0 = document.getElementsByTagName("script")[0];
+    _lgy_lw_0.parentNode.insertBefore(_lgy_lw, _lgy_lw_0);
+  })();
+</script><!-- ホワイトペーパー -->
+
+<!-- htmlgen -->
+<div class="colBox colBoxThemeBannar">
+<div class="colBoxOuter">
+<div class="colBoxHead"><h2>注目のテーマ</h2></div>
+<div class="colBoxInner">
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="http://www.atmarkit.co.jp/ait/subtop/features/coding/soe.html" onclick="designCnt('themeBannar');"><img src="/ait/images/htmlgen/rc_teemasitebanner_1_1485519674.jpg"></a></div>
+</div>
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="http://www.atmarkit.co.jp/ait/subtop/features/kwd/auto.html" onclick="designCnt('themeBannar');"><img src="/ait/images/htmlgen/rc_teemasitebanner_8_1480558496.jpg"></a></div>
+</div>
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="http://www.atmarkit.co.jp/ait/subtop/features/systemdesign/engineer.html" onclick="designCnt('themeBannar');"><img src="/ait/images/htmlgen/rc_teemasitebanner_4_1502355523.jpg"></a></div>
+</div>
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="/ait/subtop/features/jibun/uistyle.html" onclick="designCnt('themeBannar');"><img src="/ait/images/htmlgen/rc_teemasitebanner_1_1467346196.jpg"></a></div>
+</div>
+</div>
+</div>
+</div>
+<!-- /htmlgen -->
+<!-- 注目のテーマ -->
+
+<!-- htmlgen -->
+<!-- htmlgen -->
+<!-- Focus -->
+<!-- htmlgen -->
+<!-- /htmlgen -->
+<!-- editorsEye -->
+<div id="ITTO"><script>adRequest({'position':'5ITTO','path':'root/atmarkit/atit'});</script></div>
+<!-- お勧め求人情報 -->
+<!-- レクタングル -->
+<script type="text/javascript" src="/parts/include/cms/subColseminar.txt"></script>
+<!-- 記事ランキング -->
+
+<div class="colBox colBoxTensyoku" id="colBoxTensyoku">
+<div class="colBoxOuter">
+<div class="colBoxHead"><h2>転職／派遣情報を探す</h2></div>
+<div class="colBoxInner">
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="http://job.atmarkit.co.jp/" title="年収６００万円！エンジニア向けの求人満載。転職希望者必見"><IMG SRC="/parts/images/atit/dokusyacolumn_icon1_1_1459932554.png"></a></div>
+<div class="colBoxTitle"><h3><a href="http://job.atmarkit.co.jp/" title="年収６００万円！エンジニア向けの求人満載。転職希望者必見">年収６００万円！エンジニア向けの求人満載。転職希望者必見</a></h3></div>
+<div class="colBoxClear h10px"></div>
+</div>
+<div class="colBoxIndex">
+<div class="colBoxIcon"><a href="http://www.atmarkit.co.jp/job/jt/aud/index.php?action_aud_Portal=true" title="月収４０万円／派遣エンジニアのお仕事情報を毎日更新中！"><IMG SRC="/parts/images/atit/dokusyacolumn_icon2_1_1459932554.png"></a></div>
+<div class="colBoxTitle"><h3><a href="http://www.atmarkit.co.jp/job/jt/aud/index.php?action_aud_Portal=true" title="月収４０万円／派遣エンジニアのお仕事情報を毎日更新中！">月収４０万円／派遣エンジニアのお仕事情報を毎日更新中！</a></h3></div>
+<div class="colBoxClear h10px"></div>
+</div>
+<div class="colBoxClear"></div>
+</div>
+</div>
+</div>
+<!-- 転職／派遣情報を探す -->
+<!-- -->
+<!-- AD template start -->
+<style type="text/css"><!--
+#ISFLR {
+font-size:12px !important;
+font-family:"ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3" !important;
+width:300px !important;
+line-height:15px !important;
+letter-spacing:1px !important;
+}
+#ISFLR .ISFLR_newmark {color:red !important;font-weight:bold !important;}
+#ISFLR .ISFLR_maintitle {background:url(http://img.itmedia.jp/so/p/image/tieup/ISFLR_heading_atit.gif) no-repeat 0px 0px #FFF !important;text-indent:-9999px !important;height:22px !important;margin-bottom:4px !important;}
+#ISFLR .ISFLR_cont {margin:0px auto !important;padding:2px 0px 8px 0px !important;border-bottom:0px solid #FFF !important;clear:both !important;height:1% !important;text-align:center;}
+#ISFLR .ISFLR_cont img {border:0px !important;}
+#ISFLR .ISFLRP_cont {margin:0px auto !important;padding:2px 0px 8px 0px !important;border-bottom:0px solid #FFF !important;clear:both !important;height:1% !important;text-align:center;}
+#ISFLR .ISFLRP_cont img {border:0px !important;}
+--></style>
+<div id="ISFLR"><div class="ISFLR_maintitle">ソリューションFLASH</div>
+<div class="ISFLR-body" id="ISFLR-body">
+<!-- ad_start_new -->
+<script language="JavaScript" type="text/javascript">
+   <!--
+   var pid="2075500101";
+   var locs="10ISFLR";
+   var random=new Date();
+
+   var js_url='http://dlv.itmedia.jp/adsv/v1?posall='+locs+'&id='+pid+'&t=js&rnd='+random.getTime();
+   document.write('<sc'+'ript language="JavaScript" type="text/javascript" src="'+js_url+'">');
+   document.write('</sc'+'ript>');
+   //-->
+</script>
+<noscript>
+ <iframe height=50 width=290 marginwidth=0 marginheight=0 hspace=0
+   vspace=0 frameborder=0 scrolling=no src="http://dlv.itmedia.jp/adsv/v1?posall=10ISFLR&id=2075500101">
+ </iframe>
+</noscript>
+<!-- ad_end_new -->
+
+<!-- ad_start_new -->
+<script language="JavaScript" type="text/javascript">
+   <!--
+   var pid="2075500101";
+   var locs="10ISFLRP";
+   var random=new Date();
+
+   var js_url='http://dlv.itmedia.jp/adsv/v1?posall='+locs+'&id='+pid+'&t=js&rnd='+random.getTime();
+   document.write('<sc'+'ript language="JavaScript" type="text/javascript" src="'+js_url+'">');
+   document.write('</sc'+'ript>');
+   //-->
+</script>
+<noscript>
+ <iframe height=50 width=290 marginwidth=0 marginheight=0 hspace=0
+   vspace=0 frameborder=0 scrolling=no src="http://dlv.itmedia.jp/adsv/v1?posall=10ISFLRP&id=2075500101">
+ </iframe>
+</noscript>
+<!-- ad_end_new -->
+</div>
+</div>
+<script type="text/javascript">
+    var addivid = "ISFLR";
+    var addividpv = "ISFLRP";
+    var adparts = document.getElementById(addivid);
+    var adinhtml = adparts.innerHTML;
+
+    rObj = new RegExp('st=noad.*pos=' + addivid + ' ');
+    rObjP = new RegExp('st=noad.*pos=' + addividpv + ' ');
+    if (adinhtml.match(rObj) && adinhtml.match(rObjP)) {
+        document.getElementById(addivid).style.display="none";
+    } else {
+        var aditems = adArraySort(addivid + "_cont");
+        var aditemspv = adArraySort(addividpv + "_cont");
+        document.getElementById(addivid + "-body").innerHTML += aditems;
+        document.getElementById(addivid + "-body").innerHTML += aditemspv;
+    }
+
+    var adnowtime = adgetUnixTime();
+    adnowtime = adnowtime - ( 86400 * 3 ) ;
+    var admatch_str = "^<!-- ([0-9]+) -->$";
+    var adinhtmlspan = adparts.getElementsByTagName("span");
+
+    for (var adtie=0; adtie < adinhtmlspan.length; adtie++) {
+        var adtext = adinhtmlspan[adtie].innerHTML;
+        var admatch_ret = new RegExp(admatch_str).exec(adtext);
+        if ( admatch_ret && adnowtime <= admatch_ret[1] ){
+            adinhtmlspan[adtie].innerHTML = "New!";
+        }
+    }
+    function adgetUnixTime() {
+        return parseInt((new Date)/1000);
+    }
+    function adArraySort(aditem){
+        var adstrtmp = adparts.getElementsByTagName("div");
+        var adstr = new Array();
+        var adremove = new Array();
+
+        for (var adstart=0; adstart < adstrtmp.length; adstart++) {
+            if(adstrtmp[adstart].className == aditem){
+                adstr.push("<div class=" + aditem + ">" + adstrtmp[adstart].innerHTML + "</div>");
+                adremove.push(adstrtmp[adstart]);
+            }
+        }
+        for(var i = 0; i < adremove.length; i++){
+                adremove[i].parentNode.removeChild(adremove[i]);
+        }
+        adstr.sort().reverse();
+        adstr = adstr.join("");
+        return adstr;
+    }
+</script>
+<!-- AD template end -->
+<!-- ソリューションFLASH -->
+<!-- END /include/rightmenu/right_menu.html -->
+
+
+<div class="colBoxClear h10px"></div>
+<div id="job-info" class="rcBox txtTtl itmMarketing"><h2>「ITmedia マーケティング」新着記事</h2><div><!-- CMS index -->
+<p><script>(function(){var a = '/mm/articles/1808/08/news026.jpg';if(a){document.write('<a href="http://marketing.itmedia.co.jp/mm/articles/1808/08/news026.html" class="icon"><img src="http://image.itmedia.co.jp'+a+'" width="40" height="30" border="0"></a>')}else{};return true;})();</script><span class="job-textinfo"><a href="http://marketing.itmedia.co.jp/mm/articles/1808/08/news026.html">デジタルマーケターの転職、約7割が「ミドル層」の採用ニーズを実感――ウィンスリー調べ</a><br>デジタルマーケティング専門人材会社のウィンスリーは、デジタルマーケターの転職におけ...<br></span></p>
+<p><script>(function(){var a = '/mm/articles/1808/07/news114.jpg';if(a){document.write('<a href="http://marketing.itmedia.co.jp/mm/articles/1808/07/news114.html" class="icon"><img src="http://image.itmedia.co.jp'+a+'" width="40" height="30" border="0"></a>')}else{};return true;})();</script><span class="job-textinfo"><a href="http://marketing.itmedia.co.jp/mm/articles/1808/07/news114.html">「LINE Ads Platform」の配信プラットフォームが大幅刷新へ</a><br>LINEは、運用型広告配信プラットフォーム「LINE Ads Platform」において、2018年8月20日...<br></span></p>
+<p><script>(function(){var a = '/mm/articles/1808/07/news024.jpg';if(a){document.write('<a href="http://marketing.itmedia.co.jp/mm/articles/1808/07/news024.html" class="icon"><img src="http://image.itmedia.co.jp'+a+'" width="40" height="30" border="0"></a>')}else{};return true;})();</script><span class="job-textinfo"><a href="http://marketing.itmedia.co.jp/mm/articles/1808/07/news024.html">慣用句で表す理想の職場、経営者・管理職の1位は「切磋琢磨」――博報堂調べ</a><br>博報堂は企業幹部を対象とした「ビジネスリーダー調査2018」を実施し、その内容を発表し...<br></span></p>
+<!-- CMS index end -->
+<p class="job-link"><a href="http://marketing.itmedia.co.jp/">「ITmedia マーケティング」新着記事</a></p></div></div>
+
+<script type="text/javascript"><!--
+snsContents({
+	'width':'300px',
+	'likebox':'atmarkit',
+	'activitydomain':'http://www.atmarkit.co.jp/',
+	'activityfilter':'',
+	'twitterid':'atmark_it',
+	'tw_widget_id':'306296222484926464'
+});
+//--></script>
+<!-- SNSコンテンツ -->
+</div>
+<!-- rightcol end -->
+<br style="clear: both;">
+
+<!-- footer -->
+<div id="footer">
+<div class="footer_padding">
+<div class="footer_logo"><a href="/index.html"><img src="/include/footer/images/logo_footer.gif" width="83" height="40" border="0"></a></div>
+<div class="footer_txtlink">
+<a href="/index.html">＠ITトップ</a>｜
+<a href="/fcoding/">Coding Edge フォーラム トップ</a>｜
+
+<a href="http://ap.atmarkit.co.jp/bbs/core/fcoding/">会議室</a>｜
+
+<a href="/aboutus/termofuse/termofuse.html">利用規約</a>｜
+<a href="http://corp.itmedia.co.jp/corp/privacy.html">プライバシーポリシー</a>｜
+<a href="/info/sitemap/sitemap.html">サイトマップ</a>
+</div>
+<br style="clear:both;">
+<br>
+<div id="copyright" style="font-size:10px ;">Copyright &copy; ITmedia, Inc. All Rights Reserved.</div>
+<!-- test -->
+<!-- GOOGLE ANALYTICS --><script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7389445-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!-- /GOOGLE ANALYTICS END -->
+<script src="//fc.itmedia.co.jp/fpcookie?site_id=itm_"></script>
+
+</div>
+
+<!-- SiteCatalyst code version: H.2.
+Copyright 1997-2005 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<script language="JavaScript" src="/javascript/s_code.js"></script>
+<script language="JavaScript"><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+function $() {
+  var elements = new Array();
+  for (var i = 0; i < arguments.length; i++) {
+    var element = arguments[i];
+    if (typeof element == 'string')
+      element = document.getElementById(element);
+    if (arguments.length == 1)
+      return element;
+    elements.push(element);
+  }
+  return elements;
+}
+s.pageName=document.URL.replace( /(\?|#).*$/, '' );
+s.server="www.atmarkit.co.jp"
+s.channel="＠IT Coding Edge"
+s.pageType=""
+s.hier1="root,atmarkit,atit,coding,cont,articles,news"
+s.hier2="atmarkit,atit,coding,cont,articles,news"
+s.hier3="atit,coding,cont,articles,news"
+s.prop1=document.URL.replace( /(\?|#).*$/, '' );
+s.prop2="root,atmarkit,atit,coding,cont,articles,news"
+if ( $('update') == undefined )
+  s.prop3='';
+else
+  s.prop3=$('update').innerHTML.replace(/\d+分\s更新/,"");
+if ( $('byline') == undefined )
+  s.prop4=''
+else
+  s.prop4=$('byline').innerHTML.replace(/<b>|<\/b>/ig,'').replace(/\[|\]/g,'');
+/* s.prop5 : ad link name reserves */
+s.prop5=""
+s.prop6="atit"
+s.prop7="atit,coding"
+s.prop8=document.title
+s.prop9=navigator.userAgent
+s.prop10=document.URL.replace( /(\?|#).*$/, '' );
+/* s.prop13 : document.URL reserves */
+
+/* E-commerce Variables */
+s.campaign=""
+s.state=""
+s.zip=""
+s.events="event3"
+s.products=""
+s.purchaseID=""
+s.eVar1=""
+s.eVar2=""
+s.eVar3=""
+s.eVar4=""
+s.eVar5=""
+s.prop20="＠IT（CORE）";
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)//--></script>
+<script language="JavaScript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><!--/DO NOT REMOVE/-->
+<!-- End SiteCatalyst code version: H.2. -->
+<!-- claria tag start -->
+<!-- claria tag end -->
+
+<!-- mitag -->
+
+
+
+<!-- itmdp start -->
+<script src="/javascript/itmdp_code.js"></script>
+<script>
+itmdp.id = '2075500101';
+itmdp.x_dp = 'root,atmarkit,atit,coding,cont,articles,news';
+itmdp.x_ch = 'atit';
+itmdp.x_sch = 'atit,coding';
+itmdp.x_e = 'event3';
+var itm_pageview = itmdp.pageview();
+</script>
+<!-- itmdp end -->
+
+</div>
+<!-- footer end -->
+</div>
+<!-- main end -->
+</div>
+<!-- wrap end -->
+
+</div>
+</body>
+<!-- InstanceEnd -->
+</html> 

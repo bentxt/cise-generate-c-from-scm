@@ -1,0 +1,114 @@
+dyncomp - Dynamic Compiler for Gauche
+-------------------------------------
+
+Features:
+--------
+
+- Make a compiled function written in cise (C in S expression, see gauche.cgen.cise module for detail).
+
+
+
+
+Documentation:
+-------------
+
+1) Installation on a Unix.
+  % ./configure
+  % make
+  # make install
+
+   Installation on Windows (for Gauche-mingw)
+  > build-dyncomp
+
+2) Macros and Functions in dyncomp
+
+  Macro: (define-cproc name (args ...) body ...)
+    Defines a compiled function named 'name'. args notation is the same of genstub's one. body must be written in cise.
+
+    Example:
+      (define-cproc add (x::<int> y::<int>)
+        (let* ((z :: int))
+          (set! z (+ x y))
+          (return (SCM_MAKE_INT z))))
+
+      (add 1 2) ; returns 3
+
+
+  Macro: (define-cfn name (args ...) :: ret-type body ...)
+    Defines a C function named 'name'. args notation is the same of gauche.cgen.cise's one. body must be written in cise.
+
+    Example:
+      (define-cfn c_add ((x :: <int>) (y :: <int>)) :: int
+        (let* ((z :: int))
+          (set! z (+ x y))
+          (return z)))
+
+      (define-cproc add (x::<int> y::int)
+        (return (SCM_MAKE_INT (c_add x y))))
+
+      (add 1 2)    ; returns 3
+      (c_add 1 2)  ; *** ERROR: unbound variable: c_add
+
+
+  Macro: (clambda (args ...) body ...)
+     Makes an anonymous function. arg notation is the same of genstub's one. body must be written in cise.
+
+     Example:
+       (map (clambda (x::<int>)
+              (return (SCM_MAKE_INT (+ x 1))))
+            '(1 2 3))
+       ; returns '(2 3 4)
+
+
+
+  Macro: (ccode c-code ...)
+     Inserts c-code literally and compile it.
+
+     Example:
+       (ccode "#include <stdio.h>")
+
+       (define-cfunc show_message ((str :: char*)) :: void
+         {
+             printf(\"showmsg: %s\\n\", str);
+         }")
+
+       (define-cproc show-msg (str::<const-cstring>)
+         (show_message str)
+         (return SCM_UNDEFINED))
+
+       (show-msg "Hello, world") ; prints "showmsg: Hello, world\n"
+  
+
+  
+   Function: (load-library filename)
+      Loads a dynamic library.
+
+
+
+   Function: (dyncomp-debug-mode bool)
+      Sets dyncomp's debug mode. define-cproc and clambda display generated C code when dyncomp-debug-mode is #t.
+
+
+
+   Macro: (dyncomp-reset!)
+      Clears C code and symbols in current module.
+
+
+
+ NOTE: Different gauche modules can associate different binding to the same C symbol.
+       (see examples/ex3.scm)
+
+3) Examples
+  mandelbrot.scm: calculate and show Mandelbrot set. (Gauche-gl is required).
+
+
+
+
+License:
+-------
+
+dyncomp is distributed under BSD License.
+TCC is distributed under the GNU Lesser General Public License (see tcc-0.9.24/README and tcc-0.9.24/COPYING).
+
+
+KOGURO, Naoki

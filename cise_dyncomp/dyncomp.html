@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" href="../doc.css" type="text/css" media="screen" />
+<?xml-stylesheet href="../doc.css" type="text/css" media="screen" ?>
+<title>dyncomp</title>
+</head>
+
+<body>
+<p class="lang-select">English / <a href="./index-j.html">Japanese</a></p>
+<h1>dyncomp - Dynamic Compiler for Gauche</h1>
+<p class="doc-info">Last modified: 11 Oct 2008</p>
+
+<h2>What's dyncomp?</h2>
+<p>
+dyncomp enables to create C function in gauche.cgen.cise (C in S expression). This function is compiled to native code with <a href="http://bellard.org/tcc/">Tiny C Compiler</a>, so you can create a fast function.
+</p>
+
+<h2>Sample code</h2>
+<pre class="src">
+(use dyncomp)
+
+(define-cproc add (x::&lt;int&gt; y::&lt;int&gt;)
+  (let* ((z :: int))
+    (set! z (+ x y))
+    (return (SCM_MAKE_INT z))))
+
+(define-cproc sub (x::&lt;double&gt; y::&lt;double&gt;)
+  (let* ((z :: double (- x y)))
+    (return (Scm_MakeFlonum z))))
+
+(define-cproc print-number (x::&lt;double&gt;)
+  (printf "%f\n" x)
+  (return SCM_UNDEFINED))
+
+(print (add 1 2))
+(print-number (sub 3 2))
+
+(print (map (clambda (x::&lt;int&gt;)
+              (return (SCM_MAKE_INT (+ x 1))))
+            '(1 2 3)))
+</pre>
+
+<h2>Requirements</h2>
+<p>
+dyncomp requires Gauche 0.8.14 or later. I have checked the environments below.
+<ul>
+  <li>MacOSX 10.5.5 (x86)</li>
+  <li>Linux 2.6.24 (i386, ubuntu 8.04)</li>
+  <li>FreeBSD 7.0 (i386)</li>
+  <li>WindowsXP Professional / MinGW</li>
+</ul>
+</p>
+
+<h2>Download</h2>
+<ul>
+  <li><a href="./dyncomp-0.2.0.tgz">dyncomp-0.2.0.tgz</a></li>
+</ul>
+
+<h2>Installation</h2>
+<p>
+In MacOSX, Linux and FreeBSD, use gauche-package to install.
+<pre class="console">
+% gauche-package install --install-as=root dyncomp-0.2.0.tgz
+</pre>
+</p>
+<p>
+In Windows, use build-dyncomp.cmd in the archive.
+</p>
+
+<h2>ChangeLog</h2>
+<p>
+<dl>
+  <dt>2008-10-11: release version 0.2.0</dt>
+  <dd>
+    <ul>
+      <li>Gauche module has bindings of C symbols, so different gauche modules can associate different binding to the same C symbol.</li>
+      <li>Added define-cfn, dyncomp-reset!</li>
+    </ul>
+  </dd>
+  <dt>2008-7-12: release version 0.1.2</dt>
+  <dd>
+    <ul>
+      <li>Added Windows/MinGW support.</li>
+  </ul>
+  </dd>
+  <dt>2008-7-6: release version 0.1.1</dt>
+  <dd>
+    <ul>
+      <li>Added MacOSX and FreeBSD support.</li>
+  </ul>
+  </dd>
+  <dt>2008-6-22: release version 0.1</dt>
+  <dd>
+    <ul>
+      <li>Initial release</li>
+  </ul>
+  </dd>
+</dl>
+</p>
+
+<hr/>
+<address>
+<img src="../mailaddr.png" alt="naoki at koguro dot net"/>
+</address>
+
+</body>
+</html>
