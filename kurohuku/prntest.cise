@@ -1,0 +1,7 @@
+(define-cfn prn_normal (s::(const char*)) ::int
+    (make-printer
+     (putchar (cast (unsigned char) (* s)))       ; ilseq (clen == -1)
+     (+= n (printf "%s" s))                       ; incomplete (clen == -2)
+     (default-print)                              ; nonprintable
+     (begin (default-print) (+= n (wcwidth wc)))) ; printable
+    (return n))

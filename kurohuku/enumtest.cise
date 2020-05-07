@@ -1,0 +1,2 @@
+(define FooMode)
+(define-enum FooMode (MODE_X MODE_Y))
